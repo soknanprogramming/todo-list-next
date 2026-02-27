@@ -1,0 +1,64 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client"
+  output   = "../generated/prisma"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+model User {
+  id        Int      @id @default(autoincrement())
+  name      String
+  email     String   @unique
+  password  String
+  tasks     Task[]
+  projects  Project[]
+  createdAt DateTime @default(now())
+}
+
+model Project {
+  id        Int      @id @default(autoincrement())
+  name      String
+  user      User     @relation(fields: [userId], references: [id])
+  userId    Int
+  tasks     Task[]
+  createdAt DateTime @default(now())
+}
+
+model Task {
+  id          Int       @id @default(autoincrement())
+  title       String
+  description String?
+  completed   Boolean   @default(false)
+  dueDate     DateTime?
+  priority    Int?      // 1=High, 2=Medium, 3=Low
+  user        User      @relation(fields: [userId], references: [id])
+  userId      Int
+  project     Project?  @relation(fields: [projectId], references: [id])
+  projectId   Int?
+  tags        Tag[]    
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+}
+
+model Tag {
+  id    Int    @id @default(autoincrement())
+  name  String
+  tasks Task[] 
+}
+
+// Junction table for many-to-many relation
+model TaskTags {
+  taskId Int
+  tagId  Int
+
+  @@id([taskId, tagId])
+  @@map("TaskTags")
+}

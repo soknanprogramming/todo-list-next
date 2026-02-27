@@ -1,0 +1,18 @@
+version: "3.8"
+
+services:
+  postgres:
+    image: postgres:16
+    container_name: postgres_db_todolist
+    restart: no
+    environment:
+      POSTGRES_USER: soknan
+      POSTGRES_PASSWORD: Nan123
+      POSTGRES_DB: todolist
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_todolist:/var/lib/postgresql/data
+
+volumes:
+  postgres_todolist:
