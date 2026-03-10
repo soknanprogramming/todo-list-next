@@ -12,6 +12,7 @@ export const addProject = async (
   console.log("SESSION:", JSON.stringify(session, null, 2));
 
   if (!session?.user?.id) {
+    // console.log(session?.user?.id)
     return { success: false, message: "Not authenticated" };
   }
 
@@ -28,8 +29,8 @@ export const addProject = async (
         userId: parseInt(session.user.id),
       },
     });
-    return { success: true, message: "Project created ✅" };
+    return { success: true, message: "Project created" };
   } catch (e) {
-    return { success: false, message: "Something went wrong ❌" };
+    return { success: false, message: `Something went wrong: ${e}` };
   }
 };
