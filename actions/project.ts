@@ -6,7 +6,7 @@ import { auth } from "@/auth";
 export const addProject = async (
   prevState: { success: boolean; message: string },
   formData: FormData,
-) => {
+): Promise<{ success: boolean; message: string }> => {
   const session = await auth();
   // Temporary debug
   console.log("SESSION:", JSON.stringify(session, null, 2));

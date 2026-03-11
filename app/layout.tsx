@@ -5,6 +5,7 @@ import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import Link from "next/link";
 import { ThemeProvider } from "next-themes";
+import LiStyleURL from "@/components/LiStyleWithURL";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -26,7 +27,6 @@ export default async function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-
   const session = await auth();
 
   return (
@@ -42,23 +42,15 @@ export default async function RootLayout({
                   {
                     session?.user && (
                       <>
-                        <li className="hover:text-blue-500">
-                          <Link href="/">Home</Link>
-                        </li>
-                        <li className="hover:text-blue-500">
-                          <Link href="/projects">Projects</Link>
-                        </li>
+                        <LiStyleURL path="/">Home</LiStyleURL>
+                        <LiStyleURL path="/projects">Projects</LiStyleURL>
                       </>
                     )
                   }
-                  <li className="hover:text-blue-500">
-                    <Link href="/settings">Settings</Link>
-                  </li>
+                  <LiStyleURL path="/settings">Settings</LiStyleURL>
                   {
                     !session?.user && (
-                      <li className="hover:text-blue-500">
-                        <Link href="/register">Register</Link>
-                      </li>
+                      <LiStyleURL path="/register">Register</LiStyleURL>
                     )
                   }
                   <li className="hover:text-blue-500">
