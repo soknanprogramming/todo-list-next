@@ -20,6 +20,9 @@ export default function RootLayout({
                     <li className={"p-1 " + (pathname === "/projects/add_project" ? "bg-amber-700 text-white" : "bg-yellow-400 hover:bg-amber-600")}>
                         <Link href="/projects/add_project">Create Project</Link>
                     </li>
+                    <li className={"p-1 " + (pathname === "/projects/lists_project" ? "bg-amber-700 text-white" : "bg-yellow-400 hover:bg-amber-600")}>
+                        <Link href="/projects/lists_project">List Project</Link>
+                    </li>
                 </ul>
             </nav>
         </div>
