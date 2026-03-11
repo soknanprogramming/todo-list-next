@@ -7,7 +7,7 @@ export default function RootLayout({
 }>) {
   return (
     <div className="flex flex-col w-full">
-        <div className="border min-w-300 self-center sticky top-0 py-2 px-10 list-none dark:bg-black bg-white rounded-lg">
+        <div className="border min-w-300 self-center sticky top-0 py-2 px-10 list-none dark:bg-yellow-950 bg-yellow-500 rounded-lg">
             <nav>
                 <ul>
                     <li className="hover:text-blue-500">

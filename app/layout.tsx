@@ -37,12 +37,18 @@ export default async function RootLayout({
           <div className="border-r h-screen sticky top-0 w-40 p-4 list-none">
             <nav>
               <ul className="space-y-2">
-                <li className="hover:text-blue-500">
-                  <Link href="/">Home</Link>
-                </li>
-                <li className="hover:text-blue-500">
-                  <Link href="/projects">Projects</Link>
-                </li>
+                {
+                  session?.user && (
+                    <>
+                      <li className="hover:text-blue-500">
+                        <Link href="/">Home</Link>
+                      </li>
+                      <li className="hover:text-blue-500">
+                        <Link href="/projects">Projects</Link>
+                      </li>
+                    </>
+                  )
+                }
                 {
                   !session?.user && (
                     <li className="hover:text-blue-500">
