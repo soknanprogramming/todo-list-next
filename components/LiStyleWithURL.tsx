@@ -13,7 +13,7 @@ interface Props {
 const LiStyleURL: React.FC<Props> = ({ path, children, className=""}) => {
   const pathname = usePathname();
   return (
-    <li className={className + " hover:text-blue-500 " + (pathname === path ? "text-white" : "")}>
+    <li className={className + " hover:text-blue-500 " + (pathname === path  || (path !== "/" && pathname.startsWith(path))  ? "text-white" : "")}>
     <Link href={path}>{children}</Link>
   </li>
   );
