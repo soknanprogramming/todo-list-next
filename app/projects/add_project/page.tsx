@@ -11,8 +11,8 @@ export default function AddProjectForm() {
   return (
     <div>
       <form action={formAction}>
-        <input type="text" name="project_name" />
-        <button type="submit">Add Project</button>
+        <input className="bg-amber-200" type="text" name="project_name" />
+        <button className="bg-blue-200" type="submit">Add Project</button>
       </form>
 
       {state.message && (

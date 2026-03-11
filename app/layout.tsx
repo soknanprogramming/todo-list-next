@@ -4,6 +4,7 @@ import { SignIn } from "@/components/auth/signin-button";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import Link from "next/link";
+import { ThemeProvider } from "next-themes";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -29,52 +30,57 @@ export default async function RootLayout({
   const session = await auth();
 
   return (
-    <html lang="en">
+    <html lang="en" suppressHydrationWarning>
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
-        <div className="flex">
-          <div className="border-r h-screen sticky top-0 w-40 p-4 list-none">
-            <nav>
-              <ul className="space-y-2">
-                {
-                  session?.user && (
-                    <>
-                      <li className="hover:text-blue-500">
-                        <Link href="/">Home</Link>
-                      </li>
-                      <li className="hover:text-blue-500">
-                        <Link href="/projects">Projects</Link>
-                      </li>
-                    </>
-                  )
-                }
-                {
-                  !session?.user && (
-                    <li className="hover:text-blue-500">
-                      <Link href="/register">Register</Link>
-                    </li>
-                  )
-                }
-                <li className="hover:text-blue-500">
+        <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
+          <div className="flex bg-white dark:bg-black">
+            <div className="bg-yellow-500 dark:bg-yellow-950 h-screen sticky top-0 w-40 p-4 list-none">
+              <nav>
+                <ul className="space-y-2">
                   {
-                    session?.user ? (
-                      <button onClick={async () => {
-                        "use server"
-                        await signOut();
-                        }}>
-                          Logout
-                      </button>) 
-                    : (<SignIn />)
+                    session?.user && (
+                      <>
+                        <li className="hover:text-blue-500">
+                          <Link href="/">Home</Link>
+                        </li>
+                        <li className="hover:text-blue-500">
+                          <Link href="/projects">Projects</Link>
+                        </li>
+                      </>
+                    )
                   }
-                </li>
-              </ul>
-            </nav>
+                  <li className="hover:text-blue-500">
+                    <Link href="/settings">Settings</Link>
+                  </li>
+                  {
+                    !session?.user && (
+                      <li className="hover:text-blue-500">
+                        <Link href="/register">Register</Link>
+                      </li>
+                    )
+                  }
+                  <li className="hover:text-blue-500">
+                    {
+                      session?.user ? (
+                        <button onClick={async () => {
+                          "use server"
+                          await signOut();
+                          }}>
+                            Logout
+                        </button>) 
+                      : (<SignIn />)
+                    }
+                  </li>
+                </ul>
+              </nav>
+            </div>
+            <div className="p-4 flex-1">
+              {children}
+            </div>
           </div>
-          <div className="p-4 flex-1">
-            {children}
-          </div>
-        </div>
+        </ThemeProvider>
       </body>
     </html>
   );
