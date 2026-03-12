@@ -5,14 +5,42 @@ import { MdDriveFileRenameOutline } from "react-icons/md";
 import { RiDeleteBin2Line } from "react-icons/ri";
 import { updateProject } from "@/actions/updateProject";
 import { deleteProject } from "@/actions/deleteProject";
+import { Project } from "@/generated/prisma/client";
 
-export default function ProjectItem({ project }) {
+interface Props {
+  project: Project;
+}
+
+export default function ProjectItem({ project }: Props) {
   const [editing, setEditing] = useState(false);
   const [name, setName] = useState(project.name);
+  const [savedByKey, setSavedByKey] = useState(false); // track Enter key save
 
   async function save() {
-    await updateProject(project.id, name);
+    const confirmed: boolean = confirm(
+      `Are you sure you want to save this project name "${name}"?`,
+    );
+
+    if (confirmed) {
+      await updateProject(project.id, name);
+    } else {
+      setName(project.name);
+    }
     setEditing(false);
+    setSavedByKey(false); // reset the flag
+  }
+
+  async function handleDelete() {
+    const confirmed: boolean = confirm(
+      `Are you sure you want to delete this project name ${project.name} ?`,
+    );
+
+    if (confirmed) {
+      // Call the server action
+      await deleteProject(project.id);
+      // Optionally, re-render or notify parent component
+      console.log("Project deleted");
+    }
   }
 
   return (
@@ -21,7 +49,21 @@ export default function ProjectItem({ project }) {
         <input
           value={name}
           onChange={(e) => setName(e.target.value)}
-          onBlur={save}
+          onBlur={() => {
+            if (!savedByKey) save(); // only call if not already saved via Enter
+          }}
+          onKeyDown={(e) => {
+            if (e.key === "Enter") {
+              e.preventDefault();
+              setSavedByKey(true);
+              save();
+            }
+            if (e.key === "Escape") {
+              setName(project.name);
+              setEditing(false);
+              setSavedByKey(false);
+            }
+          }}
           className="border px-2"
           autoFocus
         />
@@ -30,11 +72,12 @@ export default function ProjectItem({ project }) {
       )}
 
       <div className="flex space-x-2">
-        <form action={deleteProject.bind(null, project.id)}>
-          <button className="bg-red-300 hover:bg-red-400 p-1">
-            <RiDeleteBin2Line />
-          </button>
-        </form>
+        <button
+          onClick={handleDelete}
+          className="bg-red-300 hover:bg-red-400 p-1"
+        >
+          <RiDeleteBin2Line />
+        </button>
 
         <button
           onClick={() => setEditing(true)}
