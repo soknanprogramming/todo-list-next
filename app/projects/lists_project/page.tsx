@@ -13,14 +13,15 @@ export default async function ListsProject() {
     where: {
       userId: parseInt(session?.user?.id ?? "0"),
     },
+    orderBy: {
+      id: "desc", // 'asc' = oldest first, 'desc' = newest first
+    },
   });
-
 
   return (
     <div>
       {projects.map((project) => (
-                <ProjectItem key={project.id} project={project} />
-
+        <ProjectItem key={project.id} project={project} />
       ))}
     </div>
   );
