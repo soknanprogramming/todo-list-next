@@ -44,6 +44,7 @@ export default async function RootLayout({
                       <>
                         <LiStyleURL path="/">Home</LiStyleURL>
                         <LiStyleURL path="/projects">Projects</LiStyleURL>
+                        <LiStyleURL path="/tags">Tags</LiStyleURL>
                       </>
                     )
                   }
