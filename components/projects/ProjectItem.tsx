@@ -6,17 +6,28 @@ import { RiDeleteBin2Line } from "react-icons/ri";
 import { updateProject } from "@/actions/updateProject";
 import { deleteProject } from "@/actions/deleteProject";
 import { Project } from "@/generated/prisma/client";
+import { useRouter } from "next/navigation";
+import { IoMdEye } from "react-icons/io";
 
 interface Props {
   project: Project;
 }
 
 export default function ProjectItem({ project }: Props) {
-  const [editing, setEditing] = useState(false);
-  const [name, setName] = useState(project.name);
-  const [savedByKey, setSavedByKey] = useState(false); // track Enter key save
+  const [editing, setEditing] = useState<boolean>(false);
+  const [name, setName] = useState<string>(project.name);
+  const [savedByKey, setSavedByKey] = useState<boolean>(false); // track Enter key save
+
+  const router = useRouter();
 
   async function save() {
+
+    if (project.name === name) {
+      setEditing(false);
+      setSavedByKey(false);
+      return;
+    }
+
     const confirmed: boolean = confirm(
       `Are you sure you want to save this project name "${name}"?`,
     );
@@ -84,6 +95,12 @@ export default function ProjectItem({ project }: Props) {
           className="bg-blue-300 hover:bg-blue-400 p-1"
         >
           <MdDriveFileRenameOutline />
+        </button>
+        <button
+          onClick={() => router.push(`/projects/lists_project/${project.id}`)}
+          className="bg-green-300 hover:bg-green-400 p-1"
+        >
+          <IoMdEye />
         </button>
       </div>
     </div>
