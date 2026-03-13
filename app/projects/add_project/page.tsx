@@ -1,7 +1,7 @@
 "use client";
 import { useEffect } from "react";
 import { useActionState } from "react";
-import { addProject } from "@/actions/project";
+import { addProject } from "@/actions/project/addProject";
 
 const initialState = { success: false, message: "" };
 

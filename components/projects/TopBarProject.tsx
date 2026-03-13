@@ -1,0 +1,29 @@
+"use client"
+
+import React from "react";
+import Link from "next/link";
+import { usePathname } from "next/navigation";
+
+
+const TopBarProject: React.FC = () => {
+    const pathname = usePathname();
+    return (
+        <div className="border min-w-300 self-center sticky top-0 px-10 list-none dark:bg-yellow-950 bg-yellow-500 rounded-lg">
+            <nav>
+                <ul className="flex space-x-1">
+                    <li className={"p-1 " + (pathname === "/projects" ? "bg-amber-700 text-white" : "bg-yellow-400 hover:bg-amber-600")}>
+                        <Link href="/projects">Project Home</Link>
+                    </li>
+                    <li className={"p-1 " + (pathname === "/projects/add_project" ? "bg-amber-700 text-white" : "bg-yellow-400 hover:bg-amber-600")}>
+                        <Link href="/projects/add_project">Create Project</Link>
+                    </li>
+                    <li className={"p-1 " + (pathname.startsWith("/projects/lists_project") ? "bg-amber-700 text-white" : "bg-yellow-400 hover:bg-amber-600")}>
+                        <Link href="/projects/lists_project">List Project</Link>
+                    </li>
+                </ul>
+            </nav>
+        </div>
+    )
+}
+
+export default TopBarProject;

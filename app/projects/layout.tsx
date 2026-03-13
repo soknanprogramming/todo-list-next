@@ -1,31 +1,19 @@
-"use client"
+"use server"
 
-import Link from "next/link";
-import { usePathname } from "next/navigation";
+import TopBarProject from "@/components/projects/TopBarProject";
+import { auth } from "@/auth";
 
-export default function RootLayout({
+export default async function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-  const pathname = usePathname();
+    const session = await auth();
+  if (!session?.user) return <h1> You are not logged in </h1>;
+
   return (
     <div className="flex flex-col w-full">
-        <div className="border min-w-300 self-center sticky top-0 px-10 list-none dark:bg-yellow-950 bg-yellow-500 rounded-lg">
-            <nav>
-                <ul className="flex space-x-1">
-                    <li className={"p-1 " + (pathname === "/projects" ? "bg-amber-700 text-white" : "bg-yellow-400 hover:bg-amber-600")}>
-                        <Link href="/projects">Project Home</Link>
-                    </li>
-                    <li className={"p-1 " + (pathname === "/projects/add_project" ? "bg-amber-700 text-white" : "bg-yellow-400 hover:bg-amber-600")}>
-                        <Link href="/projects/add_project">Create Project</Link>
-                    </li>
-                    <li className={"p-1 " + (pathname.startsWith("/projects/lists_project") ? "bg-amber-700 text-white" : "bg-yellow-400 hover:bg-amber-600")}>
-                        <Link href="/projects/lists_project">List Project</Link>
-                    </li>
-                </ul>
-            </nav>
-        </div>
+        <TopBarProject />
         <div>{children}</div>
     </div>
   );

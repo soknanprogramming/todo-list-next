@@ -3,8 +3,8 @@
 import { useState } from "react";
 import { MdDriveFileRenameOutline } from "react-icons/md";
 import { RiDeleteBin2Line } from "react-icons/ri";
-import { updateProject } from "@/actions/updateProject";
-import { deleteProject } from "@/actions/deleteProject";
+import { updateProject } from "@/actions/project/updateProject";
+import { deleteProject } from "@/actions/project/deleteProject";
 import { Project } from "@/generated/prisma/client";
 import { useRouter } from "next/navigation";
 import { IoMdEye } from "react-icons/io";
