@@ -3,7 +3,6 @@ import { signOut, auth } from "@/auth";
 import { SignIn } from "@/components/auth/signin-button";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
-import Link from "next/link";
 import { ThemeProvider } from "next-themes";
 import LiStyleURL from "@/components/main/LiStyleWithURL";
 
@@ -63,7 +62,7 @@ export default async function RootLayout({
                           }}>
                             Logout
                         </button>) 
-                      : (<SignIn />)
+                      : (<LiStyleURL path="/signin">Login</LiStyleURL>)
                     }
                   </li>
                 </ul>

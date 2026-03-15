@@ -1,6 +1,7 @@
 import BackButton from "@/components/button/BackButton";
 import { auth } from "@/auth";
 import prisma from "@/lib/prisma";
+import ButtonAddTask from "@/components/projects/task/ButtonAddTask";
 
 export default async function Page({
   params,
@@ -33,6 +34,7 @@ export default async function Page({
   return (
     <div>
       <BackButton className="border px-1 py-0.5 rounded-sm">Go Back</BackButton>
+      <ButtonAddTask className="border px-1 py-0.5 rounded-sm" />
       <div>Project Name: {project.name}</div>
     </div>
   );
