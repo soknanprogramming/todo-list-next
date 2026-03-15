@@ -9,8 +9,11 @@ import { Project } from "@/generated/prisma/client";
 import { useRouter } from "next/navigation";
 import { IoMdEye } from "react-icons/io";
 
+interface ProjectWithCount extends Project {
+  _count: { tasks: number };
+}
 interface Props {
-  project: Project;
+  project: ProjectWithCount;
 }
 
 export default function ProjectItem({ project }: Props) {
@@ -21,7 +24,6 @@ export default function ProjectItem({ project }: Props) {
   const router = useRouter();
 
   async function save() {
-
     if (project.name === name) {
       setEditing(false);
       setSavedByKey(false);
@@ -83,25 +85,30 @@ export default function ProjectItem({ project }: Props) {
       )}
 
       <div className="flex space-x-2">
-        <button
-          onClick={handleDelete}
-          className="bg-red-300 hover:bg-red-400 p-1"
-        >
-          <RiDeleteBin2Line />
-        </button>
+        <div>
+          <p>Tasks: {project._count.tasks}</p>
+        </div>
+        <div className="flex space-x-2">
+          <button
+            onClick={handleDelete}
+            className="bg-red-300 hover:bg-red-400 p-1"
+          >
+            <RiDeleteBin2Line />
+          </button>
 
-        <button
-          onClick={() => setEditing(true)}
-          className="bg-blue-300 hover:bg-blue-400 p-1"
-        >
-          <MdDriveFileRenameOutline />
-        </button>
-        <button
-          onClick={() => router.push(`/projects/lists_project/${project.id}`)}
-          className="bg-green-300 hover:bg-green-400 p-1"
-        >
-          <IoMdEye />
-        </button>
+          <button
+            onClick={() => setEditing(true)}
+            className="bg-blue-300 hover:bg-blue-400 p-1"
+          >
+            <MdDriveFileRenameOutline />
+          </button>
+          <button
+            onClick={() => router.push(`/projects/lists_project/${project.id}`)}
+            className="bg-green-300 hover:bg-green-400 p-1"
+          >
+            <IoMdEye />
+          </button>
+        </div>
       </div>
     </div>
   );

@@ -1,6 +1,7 @@
 import UserFeature from "./user_feature";
 import { auth } from "@/auth";
 import prisma from "@/lib/prisma";
+import TaskCard from "@/components/projects/task/TaskCard";
 
 export default async function Page({
   params,
@@ -14,11 +15,16 @@ export default async function Page({
   }
 
   const session = await auth();
-  const project = await prisma.project.findUnique({
-    where: {
-      id: Number(id),
-    },
-  });
+  let project;
+  try {
+    project = await prisma.project.findUnique({
+      where: {
+        id: Number(id),
+      },
+    });
+  } catch {
+    return <h1>Project not found and may by error too</h1>;
+  }
 
   if (!session) {
     return <h1>You are not logged in</h1>;
@@ -32,12 +38,34 @@ export default async function Page({
     return <h1>You are not authorized to view this project</h1>;
   }
 
+  let tasks = [];
+  try {
+    tasks = await prisma.task.findMany({
+      where: {
+        projectId: project.id,
+      },
+      include: {
+        tags: true,
+      }
+    });
+  } catch {
+    return <h1>Tasks not found and may by error too</h1>;
+  }
+
   return (
     <div>
       <div className="my-2">
-        <UserFeature project={project}/>
+        <UserFeature project={project} />
       </div>
       <div>Project Name: {project.name}</div>
+      <div>
+        <p>Tasks</p>
+        <div>
+          {tasks.map((task) => (
+            <TaskCard key={task.id} task={task} />
+          ))}
+        </div>
+      </div>
     </div>
   );
 }

@@ -16,6 +16,13 @@ export default async function ListsProject() {
       where: {
         userId: parseInt(session?.user?.id ?? "0"),
       },
+      include: {
+        _count: {
+          select: {
+            tasks: true,
+          },
+        }
+      },
       orderBy: {
         id: "desc", // 'asc' = oldest first, 'desc' = newest first
       },
