@@ -13,7 +13,10 @@ export default async function RootLayout({
 
   return (
     <div className="flex flex-col w-full">
-        <TopBarProject />
+        <div  className="w-full flex sticky top-4 z-50 items-center">
+          <div className="bg-amber-700 flex-1">Hello</div>
+          <TopBarProject className="self-end" />
+        </div>
         <div>{children}</div>
     </div>
   );

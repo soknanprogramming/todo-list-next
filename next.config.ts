@@ -5,7 +5,10 @@ const nextConfig: NextConfig = {
   experimental: {
     globalNotFound: true,
   },
-  allowedDevOrigins: ["172.25.144.1"],
+  // turbopack: {
+  //   root: __dirname,
+  // },
+  allowedDevOrigins: [process.env.ALLOWED_DEV_ORIGIN || ""],
 };
 
 export default nextConfig;

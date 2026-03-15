@@ -34,7 +34,7 @@ export default async function ListsProject() {
   }
 
   return (
-    <div>
+    <div className="grid 2xl:grid-cols-3 gap-2">
       {projects.map((project) => (
         <ProjectItem key={project.id} project={project} />
       ))}

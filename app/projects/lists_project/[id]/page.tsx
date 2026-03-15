@@ -46,7 +46,7 @@ export default async function Page({
       },
       include: {
         tags: true,
-      }
+      },
     });
   } catch {
     return <h1>Tasks not found and may by error too</h1>;
@@ -60,9 +60,9 @@ export default async function Page({
       <div>Project Name: {project.name}</div>
       <div>
         <p>Tasks</p>
-        <div>
+        <div className="grid 2xl:grid-cols-3 gap-2">
           {tasks.map((task) => (
-            <TaskCard key={task.id} task={task} />
+            <TaskCard className="" key={task.id} task={task} />
           ))}
         </div>
       </div>

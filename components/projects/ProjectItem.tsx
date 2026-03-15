@@ -14,9 +14,10 @@ interface ProjectWithCount extends Project {
 }
 interface Props {
   project: ProjectWithCount;
+  className?: string;
 }
 
-export default function ProjectItem({ project }: Props) {
+export default function ProjectItem({ project, className = ""}: Props) {
   const [editing, setEditing] = useState<boolean>(false);
   const [name, setName] = useState<string>(project.name);
   const [savedByKey, setSavedByKey] = useState<boolean>(false); // track Enter key save
@@ -57,7 +58,7 @@ export default function ProjectItem({ project }: Props) {
   }
 
   return (
-    <div className="my-2 bg-amber-200 p-2 flex items-center justify-between">
+    <div className={`${className} bg-amber-200 p-2 flex items-center justify-between`}>
       {editing ? (
         <input
           value={name}
