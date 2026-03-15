@@ -2,13 +2,13 @@
 
 import { useState } from "react";
 import { signIn } from "next-auth/react";
-import { useRouter } from "next/navigation";
 import Link from "next/link";
+import { refreshAndRedirect } from "@/actions/refreshAndRedirect";
+
 
 export default function LoginForm() {
   const [error, setError] = useState<string>("");
   const [loading, setLoading] = useState<boolean>(false);
-  const router = useRouter();
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -28,22 +28,29 @@ export default function LoginForm() {
     if (result?.error) {
       setError("Invalid email or password. Please try again.");
     } else {
-      router.push("/"); // ← redirect manually on success
+        await refreshAndRedirect();
     }
   };
 
   return (
-    <form
-      className="flex flex-col space-y-2 w-80"
-      onSubmit={handleSubmit}
-    >
+    <form className="flex flex-col space-y-2 w-80" onSubmit={handleSubmit}>
       {error && (
         <div className="bg-red-100 border border-red-400 text-red-700 px-3 py-2 rounded text-sm">
           {error}
         </div>
       )}
-      <input required className="bg-amber-400 border py-1 px-2" name="email" type="email" />
-      <input required className="bg-amber-400 border py-1 px-2" name="password" type="password" />
+      <input
+        required
+        className="bg-amber-400 border py-1 px-2"
+        name="email"
+        type="email"
+      />
+      <input
+        required
+        className="bg-amber-400 border py-1 px-2"
+        name="password"
+        type="password"
+      />
       <div className="flex justify-between text-center space-x-2">
         <button
           className="bg-amber-400 hover:bg-amber-300 hover:cursor-pointer rounded-sm w-full p-1 disabled:opacity-50"
@@ -52,7 +59,10 @@ export default function LoginForm() {
         >
           {loading ? "Logging in..." : "Login"}
         </button>
-        <Link className="bg-amber-400 hover:bg-amber-300 rounded-sm w-full p-1" href="/register">
+        <Link
+          className="bg-amber-400 hover:bg-amber-300 rounded-sm w-full p-1"
+          href="/register"
+        >
           Register
         </Link>
       </div>

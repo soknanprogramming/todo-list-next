@@ -1,6 +1,5 @@
 import type { Metadata } from "next";
 import { signOut, auth } from "@/auth";
-import { SignIn } from "@/components/auth/signin-button";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import { ThemeProvider } from "next-themes";
