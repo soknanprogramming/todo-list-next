@@ -34,9 +34,9 @@ export default async function RootLayout({
       >
         <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
           <div className="flex bg-white dark:bg-black">
-            <div className="bg-yellow-500 dark:bg-yellow-950 h-screen sticky top-0 w-40 p-4 list-none">
+            <div className="bg-yellow-500 dark:bg-yellow-950 h-screen sticky top-0 w-40 py-4 list-none">
               <nav>
-                <ul className="space-y-2">
+                <ul className="space-y-1">
                   {
                     session?.user && (
                       <>
@@ -55,7 +55,7 @@ export default async function RootLayout({
                   <li className="hover:text-blue-500">
                     {
                       session?.user ? (
-                        <button onClick={async () => {
+                        <button className="py-2 hover:bg-yellow-400 hover:cursor-pointer w-full px-4 text-left" onClick={async () => {
                           "use server"
                           await signOut();
                           }}>

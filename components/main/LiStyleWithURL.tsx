@@ -1,8 +1,8 @@
-"use client"
+"use client";
 
 import React from "react";
 import { usePathname } from "next/navigation";
-import Link from "next/link";
+import { useRouter } from "next/navigation";
 
 interface Props {
   path: string;
@@ -10,12 +10,23 @@ interface Props {
   className?: string;
 }
 
-const LiStyleURL: React.FC<Props> = ({ path, children, className=""}) => {
+const LiStyleURL: React.FC<Props> = ({ path, children, className = "" }) => {
   const pathname = usePathname();
+  const router = useRouter();
+
   return (
-    <li className={className + "  " + (pathname === path  || (path !== "/" && pathname.startsWith(path))  ? "text-white" : "hover:text-blue-500")}>
-    <Link href={path}>{children}</Link>
-  </li>
+    <li
+      onClick={() => router.push(path)}
+      className={
+        className +
+        " py-2 hover:cursor-pointer px-4 " +
+        (pathname === path || (path !== "/" && pathname.startsWith(path))
+          ? "bg-yellow-600 text-white"
+          : "hover:text-blue-500 hover:bg-yellow-400")
+      }
+    >
+      {children}
+    </li>
   );
 };
 
