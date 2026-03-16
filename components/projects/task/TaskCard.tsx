@@ -1,4 +1,9 @@
+"use client";
+
 import { Prisma } from "@/generated/prisma/client";
+import { useActionState, useEffect } from "react";
+import { useRouter } from "next/navigation";
+import { completeTask } from "@/actions/project/task/completeTask";
 
 type TaskWithTags = Prisma.TaskGetPayload<{
   include: { tags: true };
@@ -15,22 +20,31 @@ const priorityColor = (priority?: number | null): string => {
   else if (priority === 2) className = "bg-yellow-100 text-yellow-700";
   else if (priority === 3) className = "bg-green-100 text-green-700";
   else className = "bg-gray-100 text-gray-600";
-  return className
+  return className;
 };
 
-const TaskCard = ({ task, className = ""}: Props) => {
+const TaskCard = ({ task, className = "" }: Props) => {
+  const [stateCompleteTask, formActionCompleteTask, pendingCompleteTask] =
+    useActionState(completeTask, null);
+  const router = useRouter();
+
+  useEffect(() => {
+    if (stateCompleteTask?.success) {
+      router.refresh();
+    }
+  }, [stateCompleteTask, router]);
+
   return (
-    <div className={`${className} bg-white shadow-md rounded-xl p-5 border hover:shadow-lg transition-all`}>
-      
+    <div
+      className={`${className} shadow-md rounded-xl p-5 border hover:shadow-lg transition-all ${task.completed ? "bg-green-300" : " bg-white"}`}
+    >
       {/* Header */}
       <div className="flex justify-between items-start">
-        <h2 className="text-lg font-semibold text-gray-800">
-          {task.title}
-        </h2>
+        <h2 className="text-lg font-semibold text-gray-800">{task.title}</h2>
 
         <span
           className={`px-2 py-1 text-xs rounded-full font-medium ${priorityColor(
-            task.priority
+            task.priority,
           )}`}
         >
           {task.priority === 1 && "High"}
@@ -90,10 +104,48 @@ const TaskCard = ({ task, className = ""}: Props) => {
             Time: {task.updatedAt.toLocaleTimeString()}
           </p>
         ) : (
-          <div>
-            Never update
-          </div>
+          <div>Never update</div>
         )}
+      </div>
+      <div className="*:mt-3">
+        <div className="flex justify-end">
+          <form action={formActionCompleteTask}>
+            <input type="hidden" name="taskId" value={task.id} />
+            <input
+              type="hidden"
+              name="taskCompleted"
+              value={task.completed ? "true" : "false"}
+            />
+
+            <button
+              className="bg-gray-400 hover:bg-gray-500 hover:text-white hover:cursor-pointer mx-0.5 py-0.5 px-2 rounded-sm"
+              onClick={(e) => {
+                const ok = confirm("Are you sure?");
+                if (!ok) e.preventDefault();
+              }}
+              disabled={pendingCompleteTask}
+            >
+              {pendingCompleteTask
+                ? "Loading..."
+                : task.completed
+                  ? "Undo"
+                  : "Complete"}
+            </button>
+          </form>
+          {task.completed ? (
+            <div>Can&apos;t Edit</div>
+          ) : (
+            <button className=" bg-gray-400 hover:bg-gray-500 hover:text-white hover:cursor-pointer mx-0.5 py-0.5 px-2 rounded-sm">
+              Edit
+            </button>
+          )}
+          <button className="bg-gray-400 hover:bg-gray-500 hover:text-white hover:cursor-pointer mx-0.5 py-0.5 px-2 rounded-sm">
+            Delete
+          </button>
+        </div>
+        <div className="bg-amber-300 w-full h-7 pl-2.5 rounded-md flex items-center">
+          {stateCompleteTask?.message ? <p>{stateCompleteTask.message}</p> : <p className="text-gray-400">No message</p>}
+        </div>
       </div>
     </div>
   );

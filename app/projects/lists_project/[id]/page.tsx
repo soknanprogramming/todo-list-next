@@ -47,6 +47,9 @@ export default async function Page({
       include: {
         tags: true,
       },
+      orderBy: {
+        createdAt: "desc",
+      },
     });
   } catch {
     return <h1>Tasks not found and may by error too</h1>;
