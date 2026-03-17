@@ -1,6 +1,6 @@
 "use client";
 
-import React from "react";
+import React, { useEffect } from "react";
 import WindowFloat from "../utility/WindowFloat";
 
 interface Props {
@@ -10,6 +10,25 @@ interface Props {
 }
 
 export default function ConfirmModal({ message, onConfirm, onCancel }: Props) {
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key === "Enter") {
+        e.preventDefault();
+        onConfirm();
+      } else if (e.key === "Escape") {
+        e.preventDefault();
+        onCancel();
+      }
+    };
+
+    window.addEventListener("keydown", handleKeyDown);
+
+    // Cleanup
+    return () => {
+      window.removeEventListener("keydown", handleKeyDown);
+    };
+  }, [onConfirm, onCancel]);
+
   return (
     <WindowFloat onClose={onCancel} className="w-100 p-4">
       <div className="flex flex-col items-end gap-4">
