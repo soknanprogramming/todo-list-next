@@ -1,26 +1,58 @@
-"use client"
+"use client";
 
-import { useEffect, useState } from "react"
-import { useTheme } from "next-themes"
+import { useEffect, useState } from "react";
+import { useTheme } from "next-themes";
 
 export default function ThemeToggle() {
-  const { theme, setTheme } = useTheme()
-  const [mounted, setMounted] = useState(false)
+  const { theme, setTheme } = useTheme();
+  const [mounted, setMounted] = useState(false);
 
   useEffect(() => {
     // eslint-disable-next-line react-hooks/set-state-in-effect
-    setMounted(true)
-  }, [])
+    setMounted(true);
+  }, []);
 
-  if (!mounted) return null
+  if (!mounted) return null;
 
   return (
-    <button
-      onClick={() => setTheme(theme === "dark" ? "light" : "dark")}
-      className="p-2 rounded-md bg-gray-200 dark:bg-gray-800 text-gray-800 dark:text-gray-200 transition-colors"
-      aria-label="Toggle Dark Mode"
-    >
-      {theme === "dark" ? "☀️ Light Mode" : "🌙 Dark Mode"} 
-    </button>
-  )
+    <div className="flex items-center space-x-2">
+      <div>
+        Theme: 
+      </div>
+      <div className="flex gap-2">
+        <button
+          onClick={() => setTheme("light")}
+          className={`px-3 py-1 rounded ${
+            theme === "light"
+              ? "bg-yellow-500 text-white"
+              : "bg-gray-200 dark:bg-gray-800"
+          }`}
+        >
+          ☀️ Light
+        </button>
+
+        <button
+          onClick={() => setTheme("dark")}
+          className={`px-3 py-1 rounded ${
+            theme === "dark"
+              ? "bg-yellow-500 text-white"
+              : "bg-gray-200 dark:bg-gray-800"
+          }`}
+        >
+          🌙 Dark
+        </button>
+
+        <button
+          onClick={() => setTheme("system")}
+          className={`px-3 py-1 rounded ${
+            theme === "system"
+              ? "bg-yellow-500 text-white"
+              : "bg-gray-200 dark:bg-gray-800"
+          }`}
+        >
+          💻 System
+        </button>
+      </div>
+    </div>
+  );
 }

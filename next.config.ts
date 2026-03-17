@@ -8,6 +8,7 @@ const nextConfig: NextConfig = {
   // turbopack: {
   //   root: __dirname,
   // },
+  
   allowedDevOrigins: [process.env.ALLOWED_DEV_ORIGIN || ""],
 };
 

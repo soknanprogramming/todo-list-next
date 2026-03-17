@@ -3,6 +3,7 @@
 import { Tag } from "@/generated/prisma/client";
 import { useState } from "react";
 import { updateTag } from "@/actions/tag/updateTag";
+import { useConfirm } from "@/hooks/useConfirm";
 
 interface Props {
   tag: Tag;
@@ -12,6 +13,8 @@ export default function TagItem({ tag }: Props) {
   const [editing, setEditing] = useState<boolean>(false);
   const [name, setName] = useState<string>(tag.name);
   const [savedByKey, setSavedByKey] = useState<boolean>(false);
+    const { confirm, modal } = useConfirm();
+
 
   async function save() {
     if (tag.name === name) {
@@ -20,9 +23,7 @@ export default function TagItem({ tag }: Props) {
       return;
     }
 
-    const confirmed: boolean = confirm(
-      `Are you sure you want to save this tag name "${name}"?`,
-    );
+    const confirmed: boolean = await confirm(`Are you sure you want to save this tag name "${name}"?`);
 
     if (confirmed) {
       await updateTag(tag.id, name);
@@ -60,6 +61,8 @@ export default function TagItem({ tag }: Props) {
       ) : (
         <span>{tag.name}</span>
       )}
+      
+      {modal}
     </div>
   );
 }

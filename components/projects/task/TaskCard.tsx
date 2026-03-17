@@ -1,9 +1,14 @@
 "use client";
 
 import { Prisma } from "@/generated/prisma/client";
-import { useActionState, useEffect } from "react";
+import { useActionState, useEffect, useMemo } from "react";
 import { useRouter } from "next/navigation";
 import { completeTask } from "@/actions/project/task/completeTask";
+import TaskDescription from "./TaskDescription";
+import { useConfirm } from "@/hooks/useConfirm";
+import { FaRegCalendarAlt } from "react-icons/fa";
+import { MdAccessTime } from "react-icons/md";
+import { IoPricetagOutline } from "react-icons/io5";
 
 type TaskWithTags = Prisma.TaskGetPayload<{
   include: { tags: true };
@@ -27,6 +32,15 @@ const TaskCard = ({ task, className = "" }: Props) => {
   const [stateCompleteTask, formActionCompleteTask, pendingCompleteTask] =
     useActionState(completeTask, null);
   const router = useRouter();
+  const { confirm: confirmCompleteTask, modal } = useConfirm();
+  const daysLeft = useMemo(() => {
+    if (!task.dueDate) return null;
+
+    return Math.ceil(
+      (new Date(task.dueDate).getTime() - new Date().getTime()) /
+        (1000 * 60 * 60 * 24),
+    );
+  }, [task.dueDate]);
 
   useEffect(() => {
     if (stateCompleteTask?.success) {
@@ -36,41 +50,51 @@ const TaskCard = ({ task, className = "" }: Props) => {
 
   return (
     <div
-      className={`${className} shadow-md rounded-xl p-5 border hover:shadow-lg transition-all ${task.completed ? "bg-green-300" : " bg-white"}`}
+      className={`${className} w-full relative shadow-md rounded-xl p-5 border hover:shadow-lg transition-all ${task.completed ? "bg-green-300" : " bg-white"}`}
     >
       {/* Header */}
       <div className="flex justify-between items-start">
         <h2 className="text-lg font-semibold text-gray-800">{task.title}</h2>
 
-        <span
-          className={`px-2 py-1 text-xs rounded-full font-medium ${priorityColor(
-            task.priority,
-          )}`}
-        >
-          {task.priority === 1 && "High"}
-          {task.priority === 2 && "Medium"}
-          {task.priority === 3 && "Low"}
-          {!task.priority && "No Priority"}
-        </span>
+        <div className="flex items-center space-x-2">
+          {/* day left */}
+          <p
+            className={`px-2 py-1 text-xs rounded-full font-medium ${daysLeft === null || daysLeft < 0 ? "bg-red-500" : "bg-gray-300"}`}
+          >
+            {daysLeft === null
+              ? "No due date"
+              : daysLeft < 0
+                ? "Time out"
+                : `${daysLeft} days left`}
+          </p>
+          {/* Status */}
+          <span
+            className={`text-xs font-medium px-2 py-1 rounded-full ${
+              task.completed
+                ? "bg-green-100 text-green-700"
+                : "bg-blue-100 text-blue-700"
+            }`}
+          >
+            {task.completed ? "Completed" : "In Progress"}
+          </span>
+          <span
+            className={`px-2 py-1 text-xs rounded-full font-medium ${priorityColor(
+              task.priority,
+            )}`}
+          >
+            {task.priority === 1 && "High"}
+            {task.priority === 2 && "Medium"}
+            {task.priority === 3 && "Low"}
+            {!task.priority && "No Priority"}
+          </span>
+        </div>
       </div>
 
       {/* Description */}
-      <p className="text-gray-600 mt-2 text-sm">
-        {task.description || "No description"}
-      </p>
-
-      {/* Status */}
-      <div className="mt-3">
-        <span
-          className={`text-xs font-medium px-2 py-1 rounded-full ${
-            task.completed
-              ? "bg-green-100 text-green-700"
-              : "bg-blue-100 text-blue-700"
-          }`}
-        >
-          {task.completed ? "Completed" : "In Progress"}
-        </span>
-      </div>
+      <TaskDescription
+        className="mt-3"
+        description={task.description || "Not title"}
+      />
 
       {/* Tags */}
       <div className="flex flex-wrap gap-2 mt-4">
@@ -78,9 +102,10 @@ const TaskCard = ({ task, className = "" }: Props) => {
           task.tags.map((tag) => (
             <span
               key={tag.id}
-              className="bg-gray-100 text-gray-700 text-xs px-2 py-1 rounded-md"
+              className="bg-gray-100 flex items-center text-gray-700 text-xs px-2 py-1 rounded-md"
             >
-              #{tag.name}
+              <IoPricetagOutline className="mr-0.5" />
+              <p>{tag.name}</p>
             </span>
           ))
         ) : (
@@ -90,63 +115,92 @@ const TaskCard = ({ task, className = "" }: Props) => {
 
       {/* Dates */}
       <div className="mt-4 text-xs text-gray-500 space-y-1">
-        <p>
-          📅 Due: {task.dueDate?.toLocaleDateString() ?? "Not set"}
-          Time: {task.dueDate?.toLocaleTimeString() ?? "Not set"}
-        </p>
-        <p>
-          🕒 Created: {task.createdAt.toLocaleDateString()}
-          Time: {task.createdAt.toLocaleTimeString()}
-        </p>
+        <div className="flex">
+          <div className="flex items-center">
+            <FaRegCalendarAlt className="mr-1" />
+            <p>Due: {task.dueDate?.toLocaleDateString() ?? "Not set"}</p>
+          </div>
+          <div className="flex items-center">
+            <MdAccessTime className="mr-1" />
+            <p>{task.dueDate?.toLocaleTimeString() ?? "Not set"}</p>
+          </div>
+        </div>
+        <div className="flex">
+          <div className="flex items-center">
+            <FaRegCalendarAlt className="mr-1" />
+            <p>Created: {task.createdAt.toLocaleDateString()}</p>
+          </div>
+          <div className="flex items-center">
+            <MdAccessTime className="mr-1" />
+            <p>{task.createdAt.toLocaleTimeString()}</p>
+          </div>
+        </div>
         {task.updatedAt.getTime() !== task.createdAt.getTime() ? (
-          <p>
-            🔄 Updated: {task.updatedAt.toLocaleDateString()}
-            Time: {task.updatedAt.toLocaleTimeString()}
-          </p>
+          <div className="flex">
+            <div className="flex items-center">
+              <FaRegCalendarAlt className="mr-1" />
+              <p>Updated: {task.updatedAt.toLocaleDateString()}</p>
+            </div>
+            <div className="flex items-center">
+              <MdAccessTime className="mr-1" />
+              <p>{task.updatedAt.toLocaleTimeString()}</p>
+            </div>
+          </div>
         ) : (
-          <div>Never update</div>
+          <div className="flex">
+            <div className="flex items-center">
+              <FaRegCalendarAlt className="mr-1" />
+              <p>Never updated</p>
+            </div>
+          </div>
         )}
       </div>
       <div className="*:mt-3">
-        <div className="flex justify-end">
-          <form action={formActionCompleteTask}>
-            <input type="hidden" name="taskId" value={task.id} />
-            <input
-              type="hidden"
-              name="taskCompleted"
-              value={task.completed ? "true" : "false"}
-            />
+        <div className="flex justify-end items-center space-x-0.5">
+          {stateCompleteTask?.message && (
+            <p className="text-sm text-gray-500">{stateCompleteTask.message}</p>
+          )}
+          <button
+            type="button"
+            className="bg-gray-400 hover:bg-gray-500 hover:text-white hover:cursor-pointer py-0.5 px-2 rounded-sm"
+            onClick={async () => {
+              const ok = await confirmCompleteTask(
+                "Are you sure you want to complete this task?",
+              );
 
-            <button
-              className="bg-gray-400 hover:bg-gray-500 hover:text-white hover:cursor-pointer mx-0.5 py-0.5 px-2 rounded-sm"
-              onClick={(e) => {
-                const ok = confirm("Are you sure?");
-                if (!ok) e.preventDefault();
-              }}
-              disabled={pendingCompleteTask}
-            >
-              {pendingCompleteTask
-                ? "Loading..."
-                : task.completed
-                  ? "Undo"
-                  : "Complete"}
-            </button>
-          </form>
+              if (ok) {
+                const formData = new FormData();
+                formData.append("taskId", String(task.id));
+                formData.append(
+                  "taskCompleted",
+                  task.completed ? "true" : "false",
+                );
+                await formActionCompleteTask(formData);
+              }
+            }}
+            disabled={pendingCompleteTask}
+          >
+            {pendingCompleteTask
+              ? "Loading..."
+              : task.completed
+                ? "Undo"
+                : "Complete"}
+          </button>
           {task.completed ? (
-            <div>Can&apos;t Edit</div>
+            <></>
           ) : (
-            <button className=" bg-gray-400 hover:bg-gray-500 hover:text-white hover:cursor-pointer mx-0.5 py-0.5 px-2 rounded-sm">
+            <button className=" bg-gray-400 hover:bg-gray-500 hover:text-white hover:cursor-pointer py-0.5 px-2 rounded-sm">
               Edit
             </button>
           )}
-          <button className="bg-gray-400 hover:bg-gray-500 hover:text-white hover:cursor-pointer mx-0.5 py-0.5 px-2 rounded-sm">
+          <button className="bg-gray-400 hover:bg-gray-500 hover:text-white hover:cursor-pointer py-0.5 px-2 rounded-sm">
             Delete
           </button>
         </div>
-        <div className="bg-amber-300 w-full h-7 pl-2.5 rounded-md flex items-center">
-          {stateCompleteTask?.message ? <p>{stateCompleteTask.message}</p> : <p className="text-gray-400">No message</p>}
-        </div>
       </div>
+
+      {/* Modal */}
+      {modal}
     </div>
   );
 };

@@ -13,10 +13,10 @@ export default async function RootLayout({
 
   return (
     <div className="flex flex-col w-full">
-        <div  className="w-full flex sticky top-4 z-50 items-center">
-          <div className="bg-amber-700 flex-1">Hello</div>
+        {/* <div  className="w-full flex sticky top-4 z-50 items-center">
+          <div className="bg-amber-700 flex-1">Project Page</div>
           <TopBarProject className="self-end" />
-        </div>
+        </div> */}
         <div>{children}</div>
     </div>
   );

@@ -3,10 +3,11 @@ import React from "react";
 interface Props {
   children: React.ReactNode;
   onClose: () => void;
+  className?: string;
 }
 
 
-export default function WindowFloat({ children, onClose }: Props) {
+export default function WindowFloat({ children, onClose, className = ""}: Props) {
   return (
     <div
       onClick={onClose}
@@ -14,7 +15,7 @@ export default function WindowFloat({ children, onClose }: Props) {
     >
       <div
         onClick={(e) => e.stopPropagation()}
-        className="bg-amber-50 border max-h-full border-gray-300 p-6 rounded w-100"
+        className={`bg-amber-50 border max-h-full border-gray-300 p-6 rounded w-100 ${className}`}
       >
         {children}
       </div>

@@ -37,39 +37,36 @@ export default async function RootLayout({
             <div className="bg-yellow-500 dark:bg-yellow-950 h-screen sticky top-0 w-40 py-4 list-none">
               <nav>
                 <ul className="space-y-1">
-                  {
-                    session?.user && (
-                      <>
-                        <LiStyleURL path="/">Home</LiStyleURL>
-                        <LiStyleURL path="/projects">Projects</LiStyleURL>
-                        <LiStyleURL path="/tags">Tags</LiStyleURL>
-                      </>
-                    )
-                  }
+                  {session?.user && (
+                    <>
+                      <LiStyleURL path="/">Home</LiStyleURL>
+                      <LiStyleURL path="/projects">Projects</LiStyleURL>
+                      <LiStyleURL path="/tags">Tags</LiStyleURL>
+                    </>
+                  )}
                   <LiStyleURL path="/settings">Settings</LiStyleURL>
-                  {
-                    !session?.user && (
-                      <LiStyleURL path="/register">Register</LiStyleURL>
-                    )
-                  }
-                  <li className="hover:text-blue-500">
-                    {
-                      session?.user ? (
-                        <button className="py-2 hover:bg-yellow-400 hover:cursor-pointer w-full px-4 text-left" onClick={async () => {
-                          "use server"
+                  {!session?.user && (
+                    <LiStyleURL path="/register">Register</LiStyleURL>
+                  )}
+                  {session?.user ? (
+                    <li className="hover:text-blue-500">
+                      <button
+                        className="py-2 hover:bg-yellow-400 hover:cursor-pointer w-full px-4 text-left"
+                        onClick={async () => {
+                          "use server";
                           await signOut();
-                          }}>
-                            Logout
-                        </button>) 
-                      : (<LiStyleURL path="/signin">Login</LiStyleURL>)
-                    }
-                  </li>
+                        }}
+                      >
+                        Logout
+                      </button>
+                    </li>
+                  ) : (
+                    <LiStyleURL path="/signin">Login</LiStyleURL>
+                  )}
                 </ul>
               </nav>
             </div>
-            <div className="p-4 flex-1">
-              {children}
-            </div>
+            <div className="p-4 flex-1">{children}</div>
           </div>
         </ThemeProvider>
       </body>
