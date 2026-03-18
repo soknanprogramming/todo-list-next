@@ -3,10 +3,11 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "dev": "next dev",
+    "dev": "next dev -H 0.0.0.0",
     "build": "next build",
     "start": "next start",
-    "lint": "eslint"
+    "lint": "eslint",
+    "prisma:studio": "prisma studio --port 5555 --browser none"
   },
   "dependencies": {
     "@prisma/adapter-pg": "^7.4.1",
