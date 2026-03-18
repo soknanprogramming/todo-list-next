@@ -59,7 +59,7 @@ export async function addTask(
       },
     });
   } catch (error) {
-    console.log(error);
+    console.error(error);
     return {
       success: false,
       message: "Something went wrong",

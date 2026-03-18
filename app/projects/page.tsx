@@ -36,10 +36,10 @@ export default async function Project() {
 
   return (
     <div className="space-y-2">
-      <AddProjectForm />
+      <AddProjectForm className="" />
       <div className="grid 2xl:grid-cols-3 gap-2">
         {projects.map((project) => (
-          <ProjectItem key={project.id} project={project} />
+          <ProjectItem className="rounded-sm" key={project.id} project={project} />
         ))}
       </div>
     </div>

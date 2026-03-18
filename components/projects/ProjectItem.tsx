@@ -82,30 +82,30 @@ export default function ProjectItem({ project, className = ""}: Props) {
           autoFocus
         />
       ) : (
-        <div>{project.name}</div>
+        <p className="text-lg text-red-900">{project.name}</p>
       )}
 
       <div className="flex space-x-2">
-        <div>
-          <p>Tasks: {project._count.tasks}</p>
+        <div className="flex items-center">
+          <p className="text-gray-500 text-sm">Tasks: {project._count.tasks}</p>
         </div>
         <div className="flex space-x-2">
           <button
             onClick={handleDelete}
-            className="bg-red-300 hover:bg-red-400 p-1"
+            className="bg-red-300 rounded-sm hover:cursor-pointer hover:bg-red-400 p-1"
           >
             <RiDeleteBin2Line />
           </button>
 
           <button
             onClick={() => setEditing(true)}
-            className="bg-blue-300 hover:bg-blue-400 p-1"
+            className="bg-blue-300 rounded-sm hover:cursor-pointer hover:bg-blue-400 p-1"
           >
             <MdDriveFileRenameOutline />
           </button>
           <button
             onClick={() => router.push(`/projects/lists_project/${project.id}`)}
-            className="bg-green-300 hover:bg-green-400 p-1"
+            className="bg-green-300 rounded-sm hover:cursor-pointer hover:bg-green-400 p-1"
           >
             <IoMdEye />
           </button>

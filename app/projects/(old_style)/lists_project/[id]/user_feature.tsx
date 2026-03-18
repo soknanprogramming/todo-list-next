@@ -14,16 +14,16 @@ export default function UserFeature({ project }: Props) {
   const [openAddTaskWindow, setOpenAddTaskWindow] = useState<boolean>(false);
 
   return (
-    <>
+    <nav className="">
       <div className="flex space-x-1">
-        <BackButton className="border px-1 py-0.5 rounded-sm">
+        <BackButton className="hover:cursor-pointer bg-gray-400 hover:bg-gray-500 hover:text-white px-1 py-0.5 rounded-sm">
           Go Back
         </BackButton>
-        <button onClick={() => setOpenAddTaskWindow(true)} className="border px-1 py-0.5 rounded-sm">Add Task</button>
+        <button onClick={() => setOpenAddTaskWindow(true)} className="hover:cursor-pointer bg-gray-400 hover:bg-gray-500 hover:text-white px-1 py-0.5 rounded-sm">Add Task</button>
       </div>
       {
         openAddTaskWindow && <WindowAddTask project={project} onClose={() => setOpenAddTaskWindow(false)} />
       }
-    </>
+    </nav>
   );
 }

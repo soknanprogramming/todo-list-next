@@ -25,13 +25,13 @@ export default function WindowAddTag({ onClose }: Props) {
   }, [state, router, onClose]);
 
   return (
-    <WindowFloat onClose={onClose}>
-      <form className="space-y-2" action={formAction}>
-        <div className="space-x-2">
-          <label htmlFor="tag">Lag :</label>
-          <input name="tag" id="tag" className="bg-amber-200" type="text" />
+    <WindowFloat className="w-105 h-20" onClose={onClose}>
+      <form className="space-y-2 flex items-center" action={formAction}>
+        <div className="space-x-2 flex items-center">
+          <label htmlFor="tag">Tag :</label>
+          <input required placeholder="New tag name" name="tag" id="tag" className="bg-amber-200 py-0.5 px-2 rounded-sm" type="text" />
         </div>
-        <div className="space-x-2">
+        <div className="space-x-2 flex ml-4 items-center">
           <button
             type="submit"
             className="bg-red-300 hover:bg-red-400 hover:cursor-pointer py-0.5 px-1 rounded-sm"

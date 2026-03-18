@@ -21,9 +21,9 @@ export default async function Tags() {
   return (
     <div>
       <UserReaction />
-      <div>
+      <div className="grid 2xl:grid-cols-4 gap-1 mt-2">
         {tags.map((tag) => (
-          <TagItem key={tag.id} tag={tag} />
+          <TagItem className="rounded-sm" key={tag.id} tag={tag} />
         ))}
       </div>
     </div>

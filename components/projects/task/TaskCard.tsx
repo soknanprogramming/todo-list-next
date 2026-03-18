@@ -4,6 +4,7 @@ import { Prisma } from "@/generated/prisma/client";
 import { useActionState, useEffect, useMemo } from "react";
 import { useRouter } from "next/navigation";
 import { completeTask } from "@/actions/project/task/completeTask";
+import { deleteTask } from "@/actions/project/task/deleteTask";
 import TaskDescription from "./TaskDescription";
 import { useConfirm } from "@/hooks/useConfirm";
 import { FaRegCalendarAlt } from "react-icons/fa";
@@ -31,8 +32,9 @@ const priorityColor = (priority?: number | null): string => {
 const TaskCard = ({ task, className = "" }: Props) => {
   const [stateCompleteTask, formActionCompleteTask, pendingCompleteTask] =
     useActionState(completeTask, null);
+  const [stateDeleteTask, formActionDeleteTask, pendingDeleteTask] = useActionState(deleteTask, null);
   const router = useRouter();
-  const { confirm: confirmCompleteTask, modal } = useConfirm();
+  const { confirm: customConfirm, modal } = useConfirm();
   const daysLeft = useMemo(() => {
     if (!task.dueDate) return null;
 
@@ -45,8 +47,10 @@ const TaskCard = ({ task, className = "" }: Props) => {
   useEffect(() => {
     if (stateCompleteTask?.success) {
       router.refresh();
+    } else if (stateDeleteTask?.success){
+      router.refresh();
     }
-  }, [stateCompleteTask, router]);
+  }, [stateCompleteTask, router, stateDeleteTask]);
 
   return (
     <div
@@ -92,7 +96,7 @@ const TaskCard = ({ task, className = "" }: Props) => {
 
       {/* Description */}
       <TaskDescription
-        className="mt-3"
+        className={`mt-3 ${task.completed ? "bg-green-200" : "bg-gray-200"}`}
         description={task.description || "Not title"}
       />
 
@@ -162,10 +166,10 @@ const TaskCard = ({ task, className = "" }: Props) => {
           )}
           <button
             type="button"
-            className="bg-gray-400 hover:bg-gray-500 hover:text-white hover:cursor-pointer py-0.5 px-2 rounded-sm"
+            className={`hover:cursor-pointer py-0.5 px-2 rounded-sm ${task.completed ? "bg-red-400 hover:bg-red-500 text-gray-600 hover:text-gray-100" : "bg-yellow-400 hover:bg-yellow-500 hover:text-gray-100"}`}
             onClick={async () => {
-              const ok = await confirmCompleteTask(
-                "Are you sure you want to complete this task?",
+              const ok = await customConfirm(
+                `Are you sure you want to ${task.completed ? "uncompleted" : "completed"} this task?`,
               );
 
               if (ok) {
@@ -193,8 +197,19 @@ const TaskCard = ({ task, className = "" }: Props) => {
               Edit
             </button>
           )}
-          <button className="bg-gray-400 hover:bg-gray-500 hover:text-white hover:cursor-pointer py-0.5 px-2 rounded-sm">
-            Delete
+          <button
+            className="bg-red-400 hover:bg-red-500 text-gray-600 hover:text-gray-100 hover:cursor-pointer py-0.5 px-2 rounded-sm"
+            onClick={async () => {
+              const ok = await customConfirm("Are you sure you want to delete this task?");
+              if (ok) {
+                const formData = new FormData();
+                formData.append("taskId", String(task.id));
+                await formActionDeleteTask(formData);
+              }
+            }}
+            disabled={pendingDeleteTask}
+          >
+            {pendingDeleteTask ? "Loading..." : "Delete"}
           </button>
         </div>
       </div>
