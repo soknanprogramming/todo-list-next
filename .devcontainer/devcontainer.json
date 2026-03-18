@@ -1,0 +1,39 @@
+{
+	"name": "Todo List",
+	"dockerComposeFile": "../docker-compose.yml",
+	"service": "app",
+	"workspaceFolder": "/app",
+
+	// Use 'remoteUser' to run as a specific user in the container.
+	"remoteUser": "node",
+
+	// Configure tool-specific properties.
+	"customizations": {
+		"vscode": {
+			"extensions": [
+				"dbaeumer.vscode-eslint",
+				"esbenp.prettier-vscode",
+				"ms-vscode.vscode-typescript-react-plugin",
+				"austenc.tailwind-docs",
+				"streetsidesoftware.code-spell-checker",
+				"ms-azuretools.vscode-docker",
+				"docker.docker",
+				"editorconfig.editorconfig",
+				"dsznajder.es7-react-js-snippets",
+				"github.copilot-chat",
+				"prisma.prisma",
+				"burkeholland.simple-react-snippets",
+				"bradlc.vscode-tailwindcss"
+			]
+		}
+	},
+
+	// Forward ports for Next.js development server
+	"forwardPorts": [3000, 5555],
+	"portsAttributes": {
+		"3000": {
+			"label": "Todo App",
+			"onAutoForward": "notify"
+		}
+	}
+}
