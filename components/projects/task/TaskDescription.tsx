@@ -19,11 +19,11 @@ export default function TaskDescription({
       <div
         className={`${className} rounded-sm right-5 left-5 bg-amber-50 p-1 transition-all duration-200 h-23`}
       >
-        <p className={`text-gray-600 text-sm line-clamp-3`}>
+        <p className={`text-gray-600 whitespace-pre-line text-sm line-clamp-3`}>
           {description || "No description"}
         </p>
 
-        {description && description.length > 100 && (
+        {description && (description.length > 100 || description.split('\n').length > 3) && (
           <button
             onClick={() => setOpen((prev) => !prev)}
             className="text-blue-500 text-xs mt-1"
@@ -47,7 +47,7 @@ export default function TaskDescription({
               </button>
             </div>
             <div className="overflow-y-auto scrollbar-hide h-full m-2 rounded-sm bg-gray-200">
-              <p className={`text-gray-600 text-sm p-2`}>
+              <p className={`text-gray-600 whitespace-pre-line text-sm p-2`}>
                 {description || "No description"}
               </p>
             </div>

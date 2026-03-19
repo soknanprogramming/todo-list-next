@@ -57,7 +57,7 @@ export default async function Page({
 
   return (
     <div>
-      <div className="sticky px-2 z-60 top-1 bg-amber-50 shadow shadow-blue-500 flex items-center space-x-2">
+      <div className="sticky px-2 z-30 top-1 bg-amber-50 shadow shadow-blue-500 flex items-center space-x-2">
         <p className="text-lg"><span className="hidden">Project:</span> <span className="text-red-600">{project.name}</span></p>
         <div className="my-2">
           <UserFeature project={project} />

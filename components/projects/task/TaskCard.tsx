@@ -11,6 +11,7 @@ import { FaRegCalendarAlt } from "react-icons/fa";
 import { MdAccessTime } from "react-icons/md";
 import { IoPricetagOutline } from "react-icons/io5";
 import WindowEditTask from "./WindowEditTask";
+import ShowTag from "./ShowTag";
 
 type TaskWithTags = Prisma.TaskGetPayload<{
   include: { tags: true };
@@ -74,7 +75,18 @@ const TaskCard = ({ task, className = "" }: Props) => {
     >
       {/* Header */}
       <div className="flex justify-between items-start">
-        <h2 className="text-lg font-semibold text-gray-800">{task.title}</h2>
+        {/* LEFT SIDE */}
+        <div className="flex-1 min-w-0">
+          <div className="relative group">
+            <h2 className="text-lg font-semibold text-gray-800 truncate">
+              {task.title}
+            </h2>
+
+            <div className="absolute left-0 top-full mt-1 hidden group-hover:block bg-black text-white text-sm px-2 py-1 rounded shadow-lg z-50 max-w-xs">
+              {task.title}
+            </div>
+          </div>
+        </div>
 
         <div className="flex items-center space-x-2">
           {/* day left */}
@@ -117,21 +129,7 @@ const TaskCard = ({ task, className = "" }: Props) => {
       />
 
       {/* Tags */}
-      <div className="flex flex-wrap gap-2 mt-4">
-        {task.tags.length > 0 ? (
-          task.tags.map((tag) => (
-            <span
-              key={tag.id}
-              className="bg-gray-100 flex items-center text-gray-700 text-xs px-2 py-1 rounded-md"
-            >
-              <IoPricetagOutline className="mr-0.5" />
-              <p>{tag.name}</p>
-            </span>
-          ))
-        ) : (
-          <span className="text-gray-400 text-sm">No tags</span>
-        )}
-      </div>
+      <ShowTag className="" tags={task.tags} />
 
       {/* Dates */}
       <div className="mt-4 text-xs text-gray-500 space-y-1">

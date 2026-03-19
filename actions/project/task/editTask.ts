@@ -58,7 +58,7 @@ export async function editTask(
         userId: Number(user_id),
         projectId: Number(project_id),
         tags: {
-          connect: tags.map((id) => ({ id: Number(id) })),
+          set: tags.map((id) => ({ id: Number(id) })),
         },
       },
     });
