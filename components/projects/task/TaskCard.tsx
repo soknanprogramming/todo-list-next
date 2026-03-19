@@ -1,7 +1,7 @@
 "use client";
 
 import { Prisma } from "@/generated/prisma/client";
-import { useActionState, useEffect, useMemo } from "react";
+import { useActionState, useEffect, useMemo, useState } from "react";
 import { useRouter } from "next/navigation";
 import { completeTask } from "@/actions/project/task/completeTask";
 import { deleteTask } from "@/actions/project/task/deleteTask";
@@ -10,6 +10,7 @@ import { useConfirm } from "@/hooks/useConfirm";
 import { FaRegCalendarAlt } from "react-icons/fa";
 import { MdAccessTime } from "react-icons/md";
 import { IoPricetagOutline } from "react-icons/io5";
+import WindowEditTask from "./WindowEditTask";
 
 type TaskWithTags = Prisma.TaskGetPayload<{
   include: { tags: true };
@@ -29,25 +30,40 @@ const priorityColor = (priority?: number | null): string => {
   return className;
 };
 
+function formatDate(date: Date | string) {
+  return new Date(date).toLocaleDateString("en-US", {
+    timeZone: "UTC",
+  });
+}
+
+function formatTime(date: Date | string) {
+  return new Date(date).toLocaleTimeString("en-US", {
+    timeZone: "UTC",
+  });
+}
+
+const now = Date.now();
+
 const TaskCard = ({ task, className = "" }: Props) => {
   const [stateCompleteTask, formActionCompleteTask, pendingCompleteTask] =
     useActionState(completeTask, null);
-  const [stateDeleteTask, formActionDeleteTask, pendingDeleteTask] = useActionState(deleteTask, null);
+  const [stateDeleteTask, formActionDeleteTask, pendingDeleteTask] =
+    useActionState(deleteTask, null);
   const router = useRouter();
   const { confirm: customConfirm, modal } = useConfirm();
   const daysLeft = useMemo(() => {
     if (!task.dueDate) return null;
 
     return Math.ceil(
-      (new Date(task.dueDate).getTime() - new Date().getTime()) /
-        (1000 * 60 * 60 * 24),
+      (new Date(task.dueDate).getTime() - now) / (1000 * 60 * 60 * 24),
     );
   }, [task.dueDate]);
+  const [openEditTask, setOpenEditTask] = useState<boolean>(false);
 
   useEffect(() => {
     if (stateCompleteTask?.success) {
       router.refresh();
-    } else if (stateDeleteTask?.success){
+    } else if (stateDeleteTask?.success) {
       router.refresh();
     }
   }, [stateCompleteTask, router, stateDeleteTask]);
@@ -122,32 +138,45 @@ const TaskCard = ({ task, className = "" }: Props) => {
         <div className="flex">
           <div className="flex items-center">
             <FaRegCalendarAlt className="mr-1" />
-            <p>Due: {task.dueDate?.toLocaleDateString() ?? "Not set"}</p>
+            <p>
+              {task.dueDate
+                ? new Date(task.dueDate).toLocaleTimeString("en-US", {
+                    timeZone: "UTC",
+                  })
+                : "Not set"}
+            </p>
           </div>
           <div className="flex items-center">
             <MdAccessTime className="mr-1" />
-            <p>{task.dueDate?.toLocaleTimeString() ?? "Not set"}</p>
+            <p>
+              {/* {task.dueDate?.toLocaleTimeString() ?? "Not set"}\ */}
+              {task.dueDate
+                ? new Date(task.dueDate).toLocaleTimeString("en-US", {
+                    timeZone: "UTC",
+                  })
+                : "Not set"}
+            </p>
           </div>
         </div>
         <div className="flex">
           <div className="flex items-center">
             <FaRegCalendarAlt className="mr-1" />
-            <p>Created: {task.createdAt.toLocaleDateString()}</p>
+            <p>Created: {formatDate(task.createdAt)}</p>
           </div>
           <div className="flex items-center">
             <MdAccessTime className="mr-1" />
-            <p>{task.createdAt.toLocaleTimeString()}</p>
+            <p>{formatTime(task.createdAt)}</p>
           </div>
         </div>
         {task.updatedAt.getTime() !== task.createdAt.getTime() ? (
           <div className="flex">
             <div className="flex items-center">
               <FaRegCalendarAlt className="mr-1" />
-              <p>Updated: {task.updatedAt.toLocaleDateString()}</p>
+              <p>Updated: {formatDate(task.updatedAt)}</p>
             </div>
             <div className="flex items-center">
               <MdAccessTime className="mr-1" />
-              <p>{task.updatedAt.toLocaleTimeString()}</p>
+              <p>{formatTime(task.updatedAt)}</p>
             </div>
           </div>
         ) : (
@@ -193,14 +222,19 @@ const TaskCard = ({ task, className = "" }: Props) => {
           {task.completed ? (
             <></>
           ) : (
-            <button className=" bg-gray-400 hover:bg-gray-500 hover:text-white hover:cursor-pointer py-0.5 px-2 rounded-sm">
+            <button
+              onClick={() => setOpenEditTask(true)}
+              className=" bg-gray-400 hover:bg-gray-500 hover:text-white hover:cursor-pointer py-0.5 px-2 rounded-sm"
+            >
               Edit
             </button>
           )}
           <button
             className="bg-red-400 hover:bg-red-500 text-gray-600 hover:text-gray-100 hover:cursor-pointer py-0.5 px-2 rounded-sm"
             onClick={async () => {
-              const ok = await customConfirm("Are you sure you want to delete this task?");
+              const ok = await customConfirm(
+                "Are you sure you want to delete this task?",
+              );
               if (ok) {
                 const formData = new FormData();
                 formData.append("taskId", String(task.id));
@@ -216,6 +250,11 @@ const TaskCard = ({ task, className = "" }: Props) => {
 
       {/* Modal */}
       {modal}
+
+      {/* Edit Window */}
+      {openEditTask && (
+        <WindowEditTask onClose={() => setOpenEditTask(false)} task={task} />
+      )}
     </div>
   );
 };

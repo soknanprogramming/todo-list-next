@@ -10,6 +10,6 @@ export default async function Home() {
 
 
   return (
-    <div>Welcome {session?.user?.name ?? "Guest"} !</div>
+    <div>Welcome {session?.user?.name ?? "Guest"}</div>
   );
 }
