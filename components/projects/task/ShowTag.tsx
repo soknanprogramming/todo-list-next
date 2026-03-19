@@ -1,5 +1,4 @@
 import { Tag } from "@/generated/prisma/client";
-import { useEffect, useRef, useState } from "react";
 import { IoPricetagOutline } from "react-icons/io5";
 
 interface Props {

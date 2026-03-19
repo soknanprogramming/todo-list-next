@@ -9,7 +9,6 @@ import TaskDescription from "./TaskDescription";
 import { useConfirm } from "@/hooks/useConfirm";
 import { FaRegCalendarAlt } from "react-icons/fa";
 import { MdAccessTime } from "react-icons/md";
-import { IoPricetagOutline } from "react-icons/io5";
 import WindowEditTask from "./WindowEditTask";
 import ShowTag from "./ShowTag";
 
