@@ -60,5 +60,5 @@ model TaskTags {
   tagId  Int
 
   @@id([taskId, tagId])
-  @@map("TaskTags")
+  // @@map("TaskTags") // useless name the same as the model
 }

@@ -20,7 +20,7 @@ export default async function Page({
     project = await prisma.project.findUnique({
       where: {
         id: Number(id),
-      },
+      }
     });
   } catch {
     return <h1>Project not found and may by error too</h1>;

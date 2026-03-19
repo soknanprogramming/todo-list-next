@@ -12,9 +12,40 @@ interface Props {
 }
 
 export default function WindowEditTask({ onClose, task }: Props) {
-  const [tags, setTags] = useState<Tag[]>([]);
-  const [state, formAction] = useActionState(editTask, null);
   const router = useRouter();
+  const [tags, setTags] = useState<Tag[]>([]);
+  const [selectedTagIds, setSelectedTagIds] = useState<number[]>([]);
+  const [state, formAction] = useActionState(editTask, null);
+
+  // In your fetchCurrentTags useEffect, after setCurrentTags:
+
+  // Toggle handler:
+  function toggleTag(id: number) {
+    setSelectedTagIds((prev) =>
+      prev.includes(id) ? prev.filter((t) => t !== id) : [...prev, id],
+    );
+  }
+
+  useEffect(() => {
+    async function fetchCurrentTags() {
+      try {
+        const response = await fetch(`/api/tags/task/${task.id}`);
+        if (!response.ok) {
+          console.error("API error:", response.status, response.statusText);
+          return;
+        }
+
+        const data = await response.json();
+
+        // Make sure data is an array
+        setSelectedTagIds(data.map((tag: Tag) => tag.id));
+      } catch (err) {
+        console.error("Fetch error:", err);
+      }
+    }
+
+    fetchCurrentTags();
+  }, [task.id]);
 
   useEffect(() => {
     fetch("/api/tags")
@@ -100,6 +131,8 @@ export default function WindowEditTask({ onClose, task }: Props) {
                   name="tags"
                   id={String(tag.id)}
                   value={tag.id}
+                  checked={selectedTagIds.includes(tag.id)}
+                  onChange={() => toggleTag(tag.id)}
                 />
                 <label htmlFor={String(tag.id)}>{tag.name}</label>
               </div>
