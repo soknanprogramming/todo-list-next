@@ -8,7 +8,7 @@ interface Props {
 
 export default function ShowTag({ className = "", tags }: Props) {
   return (
-    <div className={`flex overflow-x-auto scrollbar-hide gap-2 mt-4 ${className}`}>
+    <div className={`flex h-6 overflow-x-auto scrollbar-hide gap-2 mt-4 ${className}`}>
             {tags.length > 0 ? (
               tags.map((tag) => (
                 <span

@@ -8,6 +8,7 @@ import { deleteProject } from "@/actions/project/deleteProject";
 import { Project } from "@/generated/prisma/client";
 import { useRouter } from "next/navigation";
 import { IoMdEye } from "react-icons/io";
+import { useRememberTaskParam } from "@/stores/useRememberTaskParam";
 
 interface ProjectWithCount extends Project {
   _count: { tasks: number };
@@ -22,6 +23,7 @@ export default function ProjectItem({ project, className = ""}: Props) {
   const [name, setName] = useState<string>(project.name);
   const [savedByKey, setSavedByKey] = useState<boolean>(false); // track Enter key save
   const [stateUpdateProject, updateProjectAction] = useActionState(updateProject, null);
+  const { setVisit } = useRememberTaskParam();
 
   const router = useRouter();
 
@@ -119,7 +121,10 @@ export default function ProjectItem({ project, className = ""}: Props) {
             <MdDriveFileRenameOutline />
           </button>
           <button
-            onClick={() => router.push(`/projects/lists_project/${project.id}`)}
+            onClick={() => {
+              router.push(`/projects/lists_project/${project.id}`);
+              setVisit(project.id.toString());
+            }}
             className="bg-green-300 rounded-sm hover:cursor-pointer hover:bg-green-400 p-1"
           >
             <IoMdEye />

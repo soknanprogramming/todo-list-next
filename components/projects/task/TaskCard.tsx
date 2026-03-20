@@ -135,23 +135,15 @@ const TaskCard = ({ task, className = "" }: Props) => {
         <div className="flex">
           <div className="flex items-center">
             <FaRegCalendarAlt className="mr-1" />
+            <p>Due: </p>
             <p>
-              {task.dueDate
-                ? new Date(task.dueDate).toLocaleTimeString("en-US", {
-                    timeZone: "UTC",
-                  })
-                : "Not set"}
+              {formatDate(task.createdAt)}
             </p>
           </div>
           <div className="flex items-center">
-            <MdAccessTime className="mr-1" />
+            <MdAccessTime className="ml-1.5" />
             <p>
-              {/* {task.dueDate?.toLocaleTimeString() ?? "Not set"}\ */}
-              {task.dueDate
-                ? new Date(task.dueDate).toLocaleTimeString("en-US", {
-                    timeZone: "UTC",
-                  })
-                : "Not set"}
+              {formatTime(task.createdAt)}
             </p>
           </div>
         </div>
@@ -161,7 +153,7 @@ const TaskCard = ({ task, className = "" }: Props) => {
             <p>Created: {formatDate(task.createdAt)}</p>
           </div>
           <div className="flex items-center">
-            <MdAccessTime className="mr-1" />
+            <MdAccessTime className="ml-1.5" />
             <p>{formatTime(task.createdAt)}</p>
           </div>
         </div>
@@ -172,7 +164,7 @@ const TaskCard = ({ task, className = "" }: Props) => {
               <p>Updated: {formatDate(task.updatedAt)}</p>
             </div>
             <div className="flex items-center">
-              <MdAccessTime className="mr-1" />
+              <MdAccessTime className="ml-1.5" />
               <p>{formatTime(task.updatedAt)}</p>
             </div>
           </div>

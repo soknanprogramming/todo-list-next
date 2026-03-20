@@ -4,6 +4,7 @@ import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import { ThemeProvider } from "next-themes";
 import LiStyleURL from "@/components/main/LiStyleWithURL";
+import ProjectURL from "@/components/main/ProjectURL";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -40,7 +41,7 @@ export default async function RootLayout({
                   {session?.user && (
                     <>
                       <LiStyleURL path="/">Home</LiStyleURL>
-                      <LiStyleURL path="/projects">Projects</LiStyleURL>
+                      <ProjectURL />
                       <LiStyleURL path="/tags">Tags</LiStyleURL>
                     </>
                   )}
