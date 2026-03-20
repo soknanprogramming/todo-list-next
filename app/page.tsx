@@ -10,6 +10,6 @@ export default async function Home() {
 
 
   return (
-    <div>Welcome {session?.user?.name ?? "Guest"}</div>
+    <div className="text-2xl font-semibold">Welcome <span className="text-blue-600">{session?.user?.name ?? "Guest"}</span></div>
   );
 }

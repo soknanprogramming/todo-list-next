@@ -1,7 +1,7 @@
 "use client";
 
 import WindowFloat from "@/components/utility/WindowFloat";
-import { useState, useEffect, useActionState } from "react";
+import { useState, useEffect, useRef, useActionState } from "react";
 import { Tag, Task } from "@/generated/prisma/client";
 import { editTask } from "@/actions/project/task/editTask";
 import { useRouter } from "next/navigation";
@@ -66,6 +66,20 @@ export default function WindowEditTask({ onClose, task }: Props) {
     }
   }, [state, router, onClose]);
 
+  const ref = useRef<HTMLTextAreaElement>(null);
+  const handleInput = () => {
+    const el = ref.current;
+    if (!el) return;
+
+    el.style.height = "auto";
+    if(el.scrollHeight >= 328) {
+      el.style.height = 328 + "px";
+    } else {
+      el.style.height = el.scrollHeight + "px";
+    }
+    
+  };
+
   return (
     <WindowFloat className="2xl:w-150 overflow-y-auto" onClose={onClose}>
       <h1 className="text-2xl text-gray-500 font-semibold mb-2">
@@ -88,6 +102,8 @@ export default function WindowEditTask({ onClose, task }: Props) {
         <div className="flex flex-col">
           <label htmlFor="description">Description</label>
           <textarea
+            ref={ref}
+            onInput={handleInput}
             required
             className="w-130 border ml-2 mt-1 border-gray-300 rounded-sm p-2"
             name="description"

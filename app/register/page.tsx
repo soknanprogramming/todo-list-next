@@ -9,11 +9,11 @@ const RegisterPage = () => {
 
   useEffect(() => {
     if (state?.message && state?.success === true) {
-      alert(state.message);
       if (state.success) {
-        redirect("/signin")
+        redirect("/signin");
       }
-    } 
+      alert(state.message);
+    }
   }, [state]);
 
   return (

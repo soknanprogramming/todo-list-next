@@ -1,7 +1,7 @@
 "use client";
 
 import WindowFloat from "@/components/utility/WindowFloat";
-import { useState, useEffect, useActionState } from "react";
+import { useState, useEffect, useRef, useActionState } from "react";
 import { Tag, Project } from "@/generated/prisma/client";
 import { addTask } from "@/actions/project/task/addTask";
 import { useRouter } from "next/navigation";
@@ -36,16 +36,31 @@ export default function WindowAddTask({ onClose, project }: Props) {
     }
   }, [state, router, onClose]);
 
+  const ref = useRef<HTMLTextAreaElement>(null);
+  const handleInput = () => {
+    const el = ref.current;
+    if (!el) return;
+
+    el.style.height = "auto";
+    if (el.scrollHeight >= 328) {
+      el.style.height = 328 + "px";
+    } else {
+      el.style.height = el.scrollHeight + "px";
+    }
+  };
+
   return (
-    <WindowFloat onClose={onClose}>
-      <h1>Product: {project.name}</h1>
+    <WindowFloat className="2xl:w-150 overflow-y-auto" onClose={onClose}>
+      <h1 className="text-2xl text-gray-500 font-semibold mb-2">
+        Product: {project.name}
+      </h1>
       <form action={formAction}>
         <input type="hidden" value={project.id} name="project_id" />
-        <div>
+        <div className="flex flex-col">
           <label htmlFor="title">Task Name</label>
           <input
             required
-            className="border"
+            className="w-100 border border-gray-300 rounded-sm p-2 ml-2 mt-1"
             type="text"
             name="title"
             id="title"
@@ -54,8 +69,10 @@ export default function WindowAddTask({ onClose, project }: Props) {
         <div>
           <label htmlFor="description">Description</label>
           <textarea
+            ref={ref}
+            onInput={handleInput}
             required
-            className="border"
+            className="w-130 border ml-2 mt-1 border-gray-300 rounded-sm p-2"
             name="description"
             id="description"
           ></textarea>
@@ -65,16 +82,22 @@ export default function WindowAddTask({ onClose, project }: Props) {
           <label htmlFor="due_date">Due Date</label>
           <input
             required
-            className="border"
+            className="w-50 border ml-2 mt-1 border-gray-300 rounded-sm p-2"
             type="date"
             name="due_date"
             id="due_date"
           />
         </div>
 
-        <div>
+        <div className="flex flex-col">
           <label htmlFor="priority">Priority</label>
-          <select name="priority" id="priority" required defaultValue="">
+          <select
+            className="w-50 border ml-2 mt-1 border-gray-300 rounded-sm p-2"
+            name="priority"
+            id="priority"
+            required
+            defaultValue=""
+          >
             <option value="" disabled>
               Select priority
             </option>
@@ -86,7 +109,7 @@ export default function WindowAddTask({ onClose, project }: Props) {
 
         <div>
           <label>Tags</label>
-          <div className="bg-amber-200 p-2">
+          <div className="w-130 border ml-2 mt-1 bg-gray-100 grid grid-cols-3 border-gray-300 rounded-sm p-2">
             {tags.map((tag) => (
               <div key={tag.id}>
                 <input
@@ -102,7 +125,12 @@ export default function WindowAddTask({ onClose, project }: Props) {
         </div>
 
         <div>
-          <button type="submit">Add Task</button>
+          <button
+            className="bg-gray-400 hover:bg-gray-500 hover:text-white hover:cursor-pointer px-2 py-1 rounded-sm ml-2 mt-3"
+            type="submit"
+          >
+            Add Task
+          </button>
         </div>
       </form>
     </WindowFloat>

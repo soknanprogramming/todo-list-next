@@ -2,6 +2,9 @@
 
 import { useEffect, useState } from "react";
 import { useTheme } from "next-themes";
+import { MdOutlineLightMode, MdNightlight } from "react-icons/md";
+import { GrSystem } from "react-icons/gr";
+
 
 export default function ThemeToggle() {
   const { theme, setTheme } = useTheme();
@@ -22,35 +25,35 @@ export default function ThemeToggle() {
       <div className="flex gap-2">
         <button
           onClick={() => setTheme("light")}
-          className={`px-3 py-1 rounded ${
+          className={`flex items-center hover:cursor-pointer px-3 py-1 rounded ${
             theme === "light"
               ? "bg-yellow-500 text-white"
               : "bg-gray-200 dark:bg-gray-800"
           }`}
         >
-          ☀️ Light
+          <MdOutlineLightMode className="mr-1.5" /> <span>Light</span>
         </button>
 
         <button
           onClick={() => setTheme("dark")}
-          className={`px-3 py-1 rounded ${
+          className={`flex items-center hover:cursor-pointer px-3 py-1 rounded ${
             theme === "dark"
               ? "bg-yellow-500 text-white"
               : "bg-gray-200 dark:bg-gray-800"
           }`}
         >
-          🌙 Dark
+          <MdNightlight className="mr-1.5"/> <span>Dark</span>
         </button>
 
         <button
           onClick={() => setTheme("system")}
-          className={`px-3 py-1 rounded ${
+          className={`px-3 flex items-center hover:cursor-pointer py-1 rounded ${
             theme === "system"
               ? "bg-yellow-500 text-white"
               : "bg-gray-200 dark:bg-gray-800"
           }`}
         >
-          💻 System
+          <GrSystem className="mr-1.5" /> <span>System</span>
         </button>
       </div>
     </div>
