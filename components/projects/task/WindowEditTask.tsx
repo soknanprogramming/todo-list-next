@@ -67,46 +67,49 @@ export default function WindowEditTask({ onClose, task }: Props) {
   }, [state, router, onClose]);
 
   return (
-    <WindowFloat onClose={onClose}>
-      <h1>Task Name: {task.title}</h1>
+    <WindowFloat className="2xl:w-150 overflow-y-auto" onClose={onClose}>
+      <h1 className="text-2xl text-gray-500 font-semibold mb-2">
+        Task: <span className="text-3xl text-red-600">{task.title}</span>
+      </h1>
       <form action={formAction}>
         <input type="hidden" value={String(task.id)} name="task_id" />
         <input type="hidden" value={String(task.projectId)} name="project_id" />
-        <div>
+        <div className="flex flex-col">
           <label htmlFor="title">Task Name</label>
           <input
+            className="w-100 border border-gray-300 rounded-sm p-2 ml-2 mt-1"
             type="text"
-            className="border"
             name="title"
             id="title"
             required
             defaultValue={task.title}
           />
         </div>
-        <div>
+        <div className="flex flex-col">
           <label htmlFor="description">Description</label>
           <textarea
             required
-            className="border"
+            className="w-130 border ml-2 mt-1 border-gray-300 rounded-sm p-2"
             name="description"
             id="description"
             defaultValue={task.description ?? ""}
           ></textarea>
         </div>
-        <div>
+        <div className="flex flex-col">
           <label htmlFor="due_date">Due Date</label>
           <input
             required
-            className="border"
+            className="w-50 border ml-2 mt-1 border-gray-300 rounded-sm p-2"
             type="date"
             name="due_date"
             id="due_date"
             defaultValue={task.dueDate?.toISOString().split("T")[0] ?? ""}
           />
         </div>
-        <div>
+        <div className="flex flex-col">
           <label htmlFor="priority">Priority</label>
           <select
+            className="w-50 border ml-2 mt-1 border-gray-300 rounded-sm p-2"
             name="priority"
             defaultValue={task.priority?.toString() ?? ""}
             id="priority"
@@ -123,7 +126,7 @@ export default function WindowEditTask({ onClose, task }: Props) {
 
         <div>
           <label>Tags</label>
-          <div className="bg-amber-200 p-2">
+          <div className="w-130 border ml-2 mt-1 bg-gray-100 grid grid-cols-3 border-gray-300 rounded-sm p-2">
             {tags.map((tag) => (
               <div key={tag.id}>
                 <input
@@ -141,7 +144,12 @@ export default function WindowEditTask({ onClose, task }: Props) {
         </div>
 
         <div>
-          <button type="submit">Edit Task</button>
+          <button
+            className="bg-gray-400 hover:bg-gray-500 hover:text-white hover:cursor-pointer px-2 py-1 rounded-sm ml-2 mt-3"
+            type="submit"
+          >
+            Edit Task
+          </button>
         </div>
       </form>
     </WindowFloat>
