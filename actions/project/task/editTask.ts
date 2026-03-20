@@ -3,6 +3,18 @@
 import { ActionResult } from "@/types/ActionResult";
 import prisma from "@/lib/prisma";
 import { auth } from "@/auth";
+import z from "zod";
+
+const addTaskSchema = z.object({
+  title: z
+    .string()
+    .min(1, { message: "Title is required" })
+    .max(20, { message: "Title must be less than 20 characters" }),
+  description: z
+    .string()
+    .min(1, { message: "Description is required" })
+    .max(200, { message: "Description must be less than 200 characters" }),
+});
 
 export async function editTask(
   prevState: ActionResult | null,
@@ -30,6 +42,18 @@ export async function editTask(
   const user_id = session?.user?.id as string;
   const project_id = formData.get("project_id") as string;
   const tags = formData.getAll("tags") as string[];
+
+  const result = addTaskSchema.safeParse({
+    title,
+    description,
+  });
+
+  if (!result.success) {
+    return {
+      success: false,
+      message: result.error.issues.map((error) => error.message).join(", "),
+    };
+  }
 
   // check what this project belong to this user
   const project = await prisma.project.findUnique({
