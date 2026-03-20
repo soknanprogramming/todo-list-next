@@ -1,10 +1,10 @@
 "use client";
 
 import { Tag } from "@/generated/prisma/client";
-import { useState } from "react";
 import { updateTag } from "@/actions/tag/updateTag";
 import { useConfirm } from "@/hooks/useConfirm";
 import { IoPricetagOutline } from "react-icons/io5";
+import { useActionState, useState, useEffect, startTransition } from "react";
 
 interface Props {
   tag: Tag;
@@ -16,6 +16,7 @@ export default function TagItem({ tag, className = "" }: Props) {
   const [name, setName] = useState<string>(tag.name);
   const [savedByKey, setSavedByKey] = useState<boolean>(false);
   const { confirm, modal } = useConfirm();
+  const [state, updateTagAction] = useActionState(updateTag, null);
 
   async function save() {
     if (tag.name === name) {
@@ -29,7 +30,12 @@ export default function TagItem({ tag, className = "" }: Props) {
     );
 
     if (confirmed) {
-      await updateTag(tag.id, name);
+      const formData = new FormData();
+      formData.append("id", tag.id.toString());
+      formData.append("tag", name);
+      startTransition(() => {
+        updateTagAction(formData); // call inside startTransition
+      });
     } else {
       setName(tag.name);
     }
@@ -37,9 +43,18 @@ export default function TagItem({ tag, className = "" }: Props) {
     setSavedByKey(false);
   }
 
+  useEffect(() => {
+    if (!state?.message) return;
+
+    alert(state.message);
+  }, [state]);
+
   return (
-    <div onClick={() => setEditing(true)} className={` bg-amber-200 flex items-center gap-1.5 p-1 ${className}`}>
-      <IoPricetagOutline/>
+    <div
+      onClick={() => setEditing(true)}
+      className={` bg-amber-200 flex items-center gap-1.5 p-1 ${className}`}
+    >
+      <IoPricetagOutline />
       <span>
         {editing ? (
           <input

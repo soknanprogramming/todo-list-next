@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useActionState, startTransition, useEffect } from "react";
 import { MdDriveFileRenameOutline } from "react-icons/md";
 import { RiDeleteBin2Line } from "react-icons/ri";
 import { updateProject } from "@/actions/project/updateProject";
@@ -21,8 +21,17 @@ export default function ProjectItem({ project, className = ""}: Props) {
   const [editing, setEditing] = useState<boolean>(false);
   const [name, setName] = useState<string>(project.name);
   const [savedByKey, setSavedByKey] = useState<boolean>(false); // track Enter key save
+  const [stateUpdateProject, updateProjectAction] = useActionState(updateProject, null);
 
   const router = useRouter();
+
+  useEffect(() => {
+    if (!stateUpdateProject?.message) return;
+
+    alert(stateUpdateProject.message);
+    router.refresh();
+  }, [stateUpdateProject, router]);
+
 
   async function save() {
     if (project.name === name) {
@@ -36,7 +45,13 @@ export default function ProjectItem({ project, className = ""}: Props) {
     );
 
     if (confirmed) {
-      await updateProject(project.id, name);
+      const formData = new FormData();
+      formData.append("id", project.id.toString());
+      formData.append("project_name", name);
+      startTransition(() => {
+        updateProjectAction(formData); // call inside startTransition
+      });
+      
     } else {
       setName(project.name);
     }

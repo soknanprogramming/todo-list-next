@@ -18,6 +18,7 @@ export default function AddProjectForm({ className = "" }: Props) {
   useEffect(() => {
     if (state.message) {
       alert(state.message);
+      router.refresh();
       if (state.success) {
         router.refresh();
       }

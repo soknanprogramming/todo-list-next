@@ -3,6 +3,14 @@
 import { ActionResult } from "@/types/ActionResult";
 import prisma from "@/lib/prisma";
 import { auth } from "@/auth";
+import z from "zod";
+
+const addTagSchema = z.object({
+  tag: z
+    .string()
+    .min(1, { message: "Tag is required" })
+    .max(10, { message: "Tag must be less than 10 characters" }),
+});
 
 export async function addTag(
   prevState: ActionResult | null,
@@ -12,7 +20,20 @@ export async function addTag(
   if (!session) {
     return { success: false, message: "Unauthorized" };
   }
-  const tag = formData.get("tag") as string;
+
+  const result = addTagSchema.safeParse({
+    tag: formData.get("tag"),
+  });
+
+  if (!result.success) {
+    return {
+      success: false,
+      message:
+        result.error.issues.map((e) => e.message).join(", ") || "Invalid input",
+    };
+  }
+
+  const { tag } = result.data;
 
   if (!tag || tag.trim() === "") {
     return { success: false, message: "Tag is required" };

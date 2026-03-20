@@ -2,30 +2,47 @@
 
 import prisma from "@/lib/prisma";
 import { auth } from "@/auth";
+import z from "zod";
+
+const addProjectSchema = z.object({
+  project_name: z
+    .string()
+    .min(1, { message: "Project name required" })
+    .max(20, { message: "Project name must be less than 20 characters" }),
+});
 
 export const addProject = async (
   prevState: { success: boolean; message: string },
   formData: FormData,
 ): Promise<{ success: boolean; message: string }> => {
   const session = await auth();
-  // Temporary debug
-  console.log("SESSION:", JSON.stringify(session, null, 2));
 
   if (!session?.user?.id) {
-    // console.log(session?.user?.id)
     return { success: false, message: "Not authenticated" };
   }
 
-  const projectName = formData.get("project_name");
+  const result = addProjectSchema.safeParse({
+    project_name: formData.get("project_name"),
+  });
 
-  if (!projectName || typeof projectName !== "string") {
+  if (!result.success) {
+    return {
+      success: false,
+      message:
+        result.error.issues.map((e) => e.message).join(", ") || "Invalid input",
+    };
+  }
+
+  const { project_name } = result.data;
+
+  if (!project_name || typeof project_name !== "string") {
     return { success: false, message: "Project name required" };
   }
 
   try {
     await prisma.project.create({
       data: {
-        name: projectName,
+        name: project_name,
         userId: parseInt(session.user.id),
       },
     });
