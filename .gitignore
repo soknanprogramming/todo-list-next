@@ -41,3 +41,8 @@ yarn-error.log*
 next-env.d.ts
 
 /app/generated/prisma
+
+# hide db string
+docker-compose-prod.yml
+note_command.txt
+.env.prod

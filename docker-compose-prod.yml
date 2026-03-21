@@ -8,5 +8,5 @@ services:
     ports:
       - "4000:3000"
     environment:
-      DATABASE_URL: ""
+      DATABASE_URL: "postgres://b44e7b7047f30ee5526066b20ab6f08952ae0af4f3743b5e25fdfcf82733c6d7:sk_fX5HuWknFCUBVZPZ417Qx@db.prisma.io:5432/postgres?sslmode=require"
       BETTER_AUTH_SECRET: "82452fc72d67d1af9cb02044ce97e20e15387d75d985ca8d506071e6966bb6c4"
