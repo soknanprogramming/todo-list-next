@@ -2,12 +2,13 @@ import prisma from "@/lib/prisma";
 import { auth } from "@/auth";
 import ProjectItem from "@/components/projects/ProjectItem";
 import AddProjectForm from "@/components/projects/AddProjectForm";
+import { redirect } from "next/navigation";
 
 export default async function Project() {
   const session = await auth();
 
   if (!session?.user?.id) {
-    return <div>Not logged in</div>;
+    redirect("/signin");
   }
 
   let projects = [];

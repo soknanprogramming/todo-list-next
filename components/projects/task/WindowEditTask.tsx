@@ -72,17 +72,19 @@ export default function WindowEditTask({ onClose, task }: Props) {
     if (!el) return;
 
     el.style.height = "auto";
-    if(el.scrollHeight >= 328) {
+    if (el.scrollHeight >= 328) {
       el.style.height = 328 + "px";
     } else {
       el.style.height = el.scrollHeight + "px";
     }
-    
   };
 
   return (
-    <WindowFloat className="2xl:w-150 overflow-y-auto" onClose={onClose}>
-      <h1 className="text-2xl text-gray-500 font-semibold mb-2">
+    <WindowFloat
+      className="2xl:w-150 overflow-y-auto dark:bg-gray-900 dark:border-gray-700"
+      onClose={onClose}
+    >
+      <h1 className="text-2xl text-gray-500 dark:text-gray-400 font-semibold mb-2">
         Task: <span className="text-3xl text-red-600">{task.title}</span>
       </h1>
       <form action={formAction}>
@@ -125,7 +127,8 @@ export default function WindowEditTask({ onClose, task }: Props) {
         <div className="flex flex-col">
           <label htmlFor="priority">Priority</label>
           <select
-            className="w-50 border ml-2 mt-1 border-gray-300 rounded-sm p-2"
+            className="w-50 border ml-2 mt-1 border-gray-300 rounded-sm p-2
+               dark:bg-gray-800 dark:text-white dark:border-gray-600"
             name="priority"
             defaultValue={task.priority?.toString() ?? ""}
             id="priority"
@@ -142,7 +145,7 @@ export default function WindowEditTask({ onClose, task }: Props) {
 
         <div>
           <label>Tags</label>
-          <div className="w-130 border ml-2 mt-1 bg-gray-100 grid grid-cols-3 border-gray-300 rounded-sm p-2">
+          <div className="w-130 border ml-2 mt-1 bg-gray-100 dark:bg-gray-700 dark:border-gray-600 grid grid-cols-3 border-gray-300 rounded-sm p-2">
             {tags.map((tag) => (
               <div key={tag.id}>
                 <input
@@ -152,8 +155,14 @@ export default function WindowEditTask({ onClose, task }: Props) {
                   value={tag.id}
                   checked={selectedTagIds.includes(tag.id)}
                   onChange={() => toggleTag(tag.id)}
+                  className="mr-1.5 hover:cursor-pointer"
                 />
-                <label htmlFor={String(tag.id)}>{tag.name}</label>
+                <label
+                  className="hover:cursor-pointer"
+                  htmlFor={String(tag.id)}
+                >
+                  {tag.name}
+                </label>
               </div>
             ))}
           </div>
@@ -161,7 +170,7 @@ export default function WindowEditTask({ onClose, task }: Props) {
 
         <div>
           <button
-            className="bg-gray-400 hover:bg-gray-500 hover:text-white hover:cursor-pointer px-2 py-1 rounded-sm ml-2 mt-3"
+            className="bg-gray-400 hover:bg-gray-500 dark:bg-gray-700 dark:hover:bg-gray-600 hover:text-white hover:cursor-pointer px-2 py-1 rounded-sm ml-2 mt-3"
             type="submit"
           >
             Edit Task

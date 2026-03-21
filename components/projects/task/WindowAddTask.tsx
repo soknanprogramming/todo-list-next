@@ -50,8 +50,11 @@ export default function WindowAddTask({ onClose, project }: Props) {
   };
 
   return (
-    <WindowFloat className="2xl:w-150 overflow-y-auto" onClose={onClose}>
-      <h1 className="text-2xl text-gray-500 font-semibold mb-2">
+    <WindowFloat
+      className="2xl:w-150 overflow-y-auto dark:bg-gray-900 dark:border-gray-700"
+      onClose={onClose}
+    >
+      <h1 className="text-2xl text-gray-500 dark:text-gray-400 font-semibold mb-2">
         Product: {project.name}
       </h1>
       <form action={formAction}>
@@ -60,7 +63,7 @@ export default function WindowAddTask({ onClose, project }: Props) {
           <label htmlFor="title">Task Name</label>
           <input
             required
-            className="w-100 border border-gray-300 rounded-sm p-2 ml-2 mt-1"
+            className="w-100 border border-gray-300 dark:border-gray-600 rounded-sm p-2 ml-2 mt-1"
             type="text"
             name="title"
             id="title"
@@ -72,7 +75,7 @@ export default function WindowAddTask({ onClose, project }: Props) {
             ref={ref}
             onInput={handleInput}
             required
-            className="w-130 border ml-2 mt-1 border-gray-300 rounded-sm p-2"
+            className="w-130 border ml-2 mt-1 border-gray-300 dark:border-gray-600 rounded-sm p-2"
             name="description"
             id="description"
           ></textarea>
@@ -82,7 +85,7 @@ export default function WindowAddTask({ onClose, project }: Props) {
           <label htmlFor="due_date">Due Date</label>
           <input
             required
-            className="w-50 border ml-2 mt-1 border-gray-300 rounded-sm p-2"
+            className="w-50 border ml-2 mt-1 border-gray-300 rounded-sm p-2 dark:border-gray-600"
             type="date"
             name="due_date"
             id="due_date"
@@ -92,7 +95,8 @@ export default function WindowAddTask({ onClose, project }: Props) {
         <div className="flex flex-col">
           <label htmlFor="priority">Priority</label>
           <select
-            className="w-50 border ml-2 mt-1 border-gray-300 rounded-sm p-2"
+            className="w-50 border ml-2 mt-1 border-gray-300 rounded-sm p-2
+               dark:bg-gray-800 dark:text-white dark:border-gray-600"
             name="priority"
             id="priority"
             required
@@ -109,16 +113,22 @@ export default function WindowAddTask({ onClose, project }: Props) {
 
         <div>
           <label>Tags</label>
-          <div className="w-130 border ml-2 mt-1 bg-gray-100 grid grid-cols-3 border-gray-300 rounded-sm p-2">
+          <div className="w-130 border ml-2 mt-1 bg-gray-100 dark:bg-gray-700 dark:border-gray-600 grid grid-cols-3 border-gray-300 rounded-sm p-2">
             {tags.map((tag) => (
-              <div key={tag.id}>
+              <div key={tag.id} className="flex items-center">
                 <input
                   type="checkbox"
                   name="tags"
                   id={String(tag.id)}
                   value={tag.id}
+                  className="mr-1.5 hover:cursor-pointer"
                 />
-                <label htmlFor={String(tag.id)}>{tag.name}</label>
+                <label
+                  className="hover:cursor-pointer"
+                  htmlFor={String(tag.id)}
+                >
+                  {tag.name}
+                </label>
               </div>
             ))}
           </div>
@@ -126,7 +136,7 @@ export default function WindowAddTask({ onClose, project }: Props) {
 
         <div>
           <button
-            className="bg-gray-400 hover:bg-gray-500 hover:text-white hover:cursor-pointer px-2 py-1 rounded-sm ml-2 mt-3"
+            className="bg-gray-400 dark:bg-gray-700 dark:hover:bg-gray-600 hover:bg-gray-500 hover:text-white hover:cursor-pointer px-2 py-1 rounded-sm ml-2 mt-3"
             type="submit"
           >
             Add Task

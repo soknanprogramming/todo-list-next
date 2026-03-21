@@ -12,7 +12,7 @@ export default function UserReaction({ className = "" }: Props) {
     return (
     <div>
       <button
-        className={`${className} bg-gray-300 dark:bg-gray-800 border border-gray-400 py-0.5 px-1 rounded-sm hover:bg-gray-400 dark:hover:bg-gray-700 hover:cursor-pointer`}
+        className={`${className} bg-gray-300 dark:bg-gray-800 border border-gray-400 dark:border-gray-700 py-0.5 px-1 rounded-sm hover:bg-gray-400 dark:hover:bg-gray-700 hover:cursor-pointer`}
         onClick={() => setIsOpenAddTag(true)}
       >
         Add Tag

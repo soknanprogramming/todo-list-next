@@ -41,26 +41,28 @@ export default function LoginForm() {
       )}
       <input
         required
-        className="bg-amber-400 border py-1 px-2"
+        className="bg-amber-400 border border-amber-300 dark:bg-amber-800 dark:border-amber-700 rounded-sm py-1 px-2"
+        placeholder="Email"
         name="email"
         type="email"
       />
       <input
         required
-        className="bg-amber-400 border py-1 px-2"
+        className="bg-amber-400 border border-amber-300 dark:bg-amber-800 dark:border-amber-700 rounded-sm py-1 px-2"
+        placeholder="Password"
         name="password"
         type="password"
       />
       <div className="flex justify-between text-center space-x-2">
         <button
-          className="bg-amber-400 hover:bg-amber-300 hover:cursor-pointer rounded-sm w-full p-1 disabled:opacity-50"
+          className="bg-gray-400 hover:bg-gray-500 dark:bg-gray-800 dark:hover:bg-gray-700 hover:cursor-pointer rounded-sm w-full p-1 disabled:opacity-50"
           type="submit"
           disabled={loading}
         >
           {loading ? "Logging in..." : "Login"}
         </button>
         <Link
-          className="bg-amber-400 hover:bg-amber-300 rounded-sm w-full p-1"
+          className="bg-gray-400 hover:bg-gray-500 dark:bg-gray-800 dark:hover:bg-gray-700 rounded-sm w-full p-1"
           href="/register"
         >
           Register

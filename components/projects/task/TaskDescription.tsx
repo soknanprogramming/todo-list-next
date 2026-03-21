@@ -34,20 +34,20 @@ export default function TaskDescription({
       </div>
       {open && (
         <WindowFloat
-          className="w-200 h-11/12 py-1 bg-gray-300"
+          className="w-200 h-11/12 py-1 bg-gray-300 dark:bg-gray-800 dark:border-gray-700"
           onClose={() => setOpen(false)}
         >
           <div className="flex flex-col h-full my-1">
             <div className="self-end">
               <button
                 onClick={() => setOpen((prev) => !prev)}
-                className=" bg-amber-500 px-2 rounded-sm hover:cursor-pointer"
+                className=" bg-amber-500 dark:bg-amber-800 dark:hover:bg-amber-700 hover:bg-amber-600 px-2 rounded-sm hover:cursor-pointer"
               >
                 Close
               </button>
             </div>
-            <div className="overflow-y-auto scrollbar-hide h-full m-2 rounded-sm bg-gray-200">
-              <p className={`text-gray-600 whitespace-pre-line text-sm p-2`}>
+            <div className="overflow-y-auto scrollbar-hide h-full m-2 rounded-sm bg-gray-200 dark:bg-gray-700">
+              <p className={`text-gray-600 dark:text-gray-200 whitespace-pre-line text-sm p-2`}>
                 {description || "No description"}
               </p>
             </div>

@@ -2,6 +2,7 @@ import UserFeature from "./user_feature";
 import { auth } from "@/auth";
 import prisma from "@/lib/prisma";
 import TaskCard from "@/components/projects/task/TaskCard";
+import { redirect } from "next/navigation";
 
 export default async function Page({
   params,
@@ -27,7 +28,7 @@ export default async function Page({
   }
 
   if (!session) {
-    return <h1>You are not logged in</h1>;
+    redirect("/signin");
   }
 
   if (!project) {

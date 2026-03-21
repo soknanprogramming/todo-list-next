@@ -90,7 +90,7 @@ const TaskCard = ({ task, className = "" }: Props) => {
         <div className="flex items-center space-x-2">
           {/* day left */}
           <p
-            className={`px-2 py-1 text-xs rounded-full font-medium ${daysLeft === null || daysLeft < 0 ? "bg-red-500" : "bg-gray-300"}`}
+            className={`px-2 py-1 text-xs rounded-full font-medium ${daysLeft === null || daysLeft < 0 ? "bg-red-500" : "bg-gray-300 dark:bg-gray-600"}`}
           >
             {daysLeft === null
               ? "No due date"
