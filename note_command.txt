@@ -1,3 +1,5 @@
 docker build -f Dockerfile.prod -t soknan/todo-list:newest .
-
 docker run --env-file .env.prod -p 4000:3000 soknan/todo-list:newest
+
+docker build -t soknan/todo-list:v1.1 .
+docker push soknan/todo-list:v1.1
