@@ -30,19 +30,19 @@ export default function ConfirmModal({ message, onConfirm, onCancel }: Props) {
   }, [onConfirm, onCancel]);
 
   return (
-    <WindowFloat onClose={onCancel} className="w-100 p-4">
+    <WindowFloat onClose={onCancel} className="w-100 p-4 dark:bg-gray-900 dark:border-gray-700">
       <div className="flex flex-col gap-4">
-        <p className="text-gray-800 text-center">{message}</p>
+        <p className="text-gray-800 dark:text-gray-50 text-center">{message}</p>
         <div className="flex gap-1.5 self-end">
           <button
             onClick={onConfirm}
-            className="px-3 py-1 bg-blue-600 hover:cursor-pointer text-white rounded hover:bg-blue-700"
+            className="px-3 py-1 bg-blue-600 dark:bg-blue-400 dark:hover:bg-blue-300 hover:cursor-pointer text-white dark:text-black rounded hover:bg-blue-700"
           >
             Yes
           </button>
           <button
             onClick={onCancel}
-            className="px-3 py-1 bg-gray-300 hover:cursor-pointer text-gray-700 rounded hover:bg-gray-400"
+            className="px-3 py-1 bg-gray-300 dark:bg-gray-400 dark:hover:bg-gray-300 hover:cursor-pointer text-gray-700 rounded hover:bg-gray-400"
           >
             No
           </button>

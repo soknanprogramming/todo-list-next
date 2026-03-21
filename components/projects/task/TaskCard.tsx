@@ -70,14 +70,14 @@ const TaskCard = ({ task, className = "" }: Props) => {
 
   return (
     <div
-      className={`${className} w-full relative shadow-md rounded-xl p-5 border hover:shadow-lg transition-all ${task.completed ? "bg-green-300" : " bg-white"}`}
+      className={`${className} w-full relative shadow-md rounded-xl p-5 border hover:shadow-lg transition-all ${task.completed ? "bg-green-300 dark:bg-green-700 dark:border-green-800" : " bg-white dark:bg-gray-800 dark:border-gray-700"}`}
     >
       {/* Header */}
       <div className="flex justify-between items-start">
         {/* LEFT SIDE */}
         <div className="flex-1 min-w-0">
           <div className="relative group">
-            <h2 className="text-lg font-semibold text-gray-800 truncate">
+            <h2 className="text-lg font-semibold text-gray-800 dark:text-gray-100 truncate">
               {task.title}
             </h2>
 
@@ -123,7 +123,7 @@ const TaskCard = ({ task, className = "" }: Props) => {
 
       {/* Description */}
       <TaskDescription
-        className={`mt-3 ${task.completed ? "bg-green-200" : "bg-gray-200"}`}
+        className={`mt-3 ${task.completed ? "bg-green-200 dark:bg-green-900" : "bg-gray-200 dark:bg-gray-700 "}`}
         description={task.description || "Not title"}
       />
 
@@ -131,7 +131,7 @@ const TaskCard = ({ task, className = "" }: Props) => {
       <ShowTag className="" tags={task.tags} />
 
       {/* Dates */}
-      <div className="mt-4 text-xs text-gray-500 space-y-1">
+      <div className="mt-4 text-xs text-gray-500 dark:text-gray-300 space-y-1">
         <div className="flex">
           <div className="flex items-center">
             <FaRegCalendarAlt className="mr-1" />
@@ -180,11 +180,11 @@ const TaskCard = ({ task, className = "" }: Props) => {
       <div className="*:mt-3">
         <div className="flex justify-end items-center space-x-0.5">
           {stateCompleteTask?.message && (
-            <p className="text-sm text-gray-500">{stateCompleteTask.message}</p>
+            <p className="text-sm text-gray-500 dark:text-gray-300 mr-1.5">{stateCompleteTask.message}</p>
           )}
           <button
             type="button"
-            className={`hover:cursor-pointer py-0.5 px-2 rounded-sm ${task.completed ? "bg-red-400 hover:bg-red-500 text-gray-600 hover:text-gray-100" : "bg-yellow-400 hover:bg-yellow-500 hover:text-gray-100"}`}
+            className={`hover:cursor-pointer py-0.5 px-2 rounded-sm ${task.completed ? "bg-red-400 hover:bg-red-500 text-gray-600 hover:text-gray-100" : "bg-yellow-400 hover:bg-yellow-500 dark:bg-yellow-800 dark:hover:bg-yellow-700 hover:text-gray-100 dark:text-gray-300"}`}
             onClick={async () => {
               const ok = await customConfirm(
                 `Are you sure you want to ${task.completed ? "uncompleted" : "completed"} this task?`,

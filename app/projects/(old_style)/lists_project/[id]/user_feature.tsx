@@ -16,10 +16,10 @@ export default function UserFeature({ project }: Props) {
   return (
     <nav className="">
       <div className="flex space-x-1">
-        <BackButton url="/projects" className="hover:cursor-pointer bg-gray-400 hover:bg-gray-500 hover:text-white px-1 py-0.5 rounded-sm">
+        <BackButton url="/projects" className="hover:cursor-pointer bg-gray-400 hover:bg-gray-500 dark:bg-gray-700 dark:hover:bg-gray-600 hover:text-white px-1 py-0.5 rounded-sm">
           Go Back
         </BackButton>
-        <button onClick={() => setOpenAddTaskWindow(true)} className="hover:cursor-pointer bg-gray-400 hover:bg-gray-500 hover:text-white px-1 py-0.5 rounded-sm">Add Task</button>
+        <button onClick={() => setOpenAddTaskWindow(true)} className="hover:cursor-pointer bg-gray-400 hover:bg-gray-500 dark:bg-gray-700 dark:hover:bg-gray-600 hover:text-white px-1 py-0.5 rounded-sm">Add Task</button>
       </div>
       {
         openAddTaskWindow && <WindowAddTask project={project} onClose={() => setOpenAddTaskWindow(false)} />

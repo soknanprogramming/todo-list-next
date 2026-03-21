@@ -19,7 +19,7 @@ export default function TaskDescription({
       <div
         className={`${className} rounded-sm right-5 left-5 bg-amber-50 p-1 transition-all duration-200 h-23`}
       >
-        <p className={`text-gray-600 whitespace-pre-line text-sm line-clamp-3`}>
+        <p className={`text-gray-600 dark:text-gray-200 whitespace-pre-line text-sm line-clamp-3`}>
           {description || "No description"}
         </p>
 

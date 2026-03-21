@@ -28,8 +28,8 @@ export default function AddProjectForm({ className = "" }: Props) {
   return (
     <div className={`pt-2 ${className}`}>
       <form className="flex gap-1" action={formAction}>
-        <input required placeholder="Project name !" className="bg-amber-200 px-2 py-1 rounded-sm border border-amber-500" type="text" name="project_name" />
-        <button className="bg-blue-200 hover:bg-blue-300 hover:text-white hover:cursor-pointer rounded-sm px-2 py-1" type="submit">
+        <input required placeholder="Project name !" className="bg-amber-200 dark:bg-amber-800 px-2 py-1 rounded-sm border border-amber-500" type="text" name="project_name" />
+        <button className="bg-blue-200 hover:bg-blue-300 dark:bg-blue-800 dark:hover:bg-blue-900 hover:text-white hover:cursor-pointer rounded-sm px-2 py-1" type="submit">
           Add New
         </button>
       </form>

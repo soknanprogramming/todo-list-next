@@ -52,7 +52,7 @@ export default function TagItem({ tag, className = "" }: Props) {
   return (
     <div
       onClick={() => setEditing(true)}
-      className={` bg-amber-200 flex items-center gap-1.5 p-1 ${className}`}
+      className={` bg-amber-200 dark:bg-amber-900 flex items-center gap-1.5 p-1 ${className}`}
     >
       <IoPricetagOutline />
       <span>

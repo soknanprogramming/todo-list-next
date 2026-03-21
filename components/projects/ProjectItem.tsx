@@ -75,7 +75,7 @@ export default function ProjectItem({ project, className = ""}: Props) {
   }
 
   return (
-    <div className={`${className} bg-amber-200 p-2 flex items-center justify-between`}>
+    <div className={`${className} bg-amber-200 dark:bg-amber-800 p-2 flex items-center justify-between`}>
       {editing ? (
         <input
           value={name}
@@ -99,24 +99,24 @@ export default function ProjectItem({ project, className = ""}: Props) {
           autoFocus
         />
       ) : (
-        <p className="text-lg text-red-900">{project.name}</p>
+        <p className="text-lg text-red-900 dark:text-red-200">{project.name}</p>
       )}
 
       <div className="flex space-x-2">
         <div className="flex items-center">
-          <p className="text-gray-500 text-sm">Tasks: {project._count.tasks}</p>
+          <p className="text-gray-500 dark:text-gray-300 text-sm">Tasks: {project._count.tasks}</p>
         </div>
         <div className="flex space-x-2">
           <button
             onClick={handleDelete}
-            className="bg-red-300 rounded-sm hover:cursor-pointer hover:bg-red-400 p-1"
+            className="bg-red-300 dark:bg-red-600 rounded-sm hover:cursor-pointer hover:bg-red-400 p-1"
           >
             <RiDeleteBin2Line />
           </button>
 
           <button
             onClick={() => setEditing(true)}
-            className="bg-blue-300 rounded-sm hover:cursor-pointer hover:bg-blue-400 p-1"
+            className="bg-blue-300 dark:bg-blue-600 rounded-sm hover:cursor-pointer hover:bg-blue-400 p-1"
           >
             <MdDriveFileRenameOutline />
           </button>
@@ -125,7 +125,7 @@ export default function ProjectItem({ project, className = ""}: Props) {
               router.push(`/projects/lists_project/${project.id}`);
               setVisit(project.id.toString());
             }}
-            className="bg-green-300 rounded-sm hover:cursor-pointer hover:bg-green-400 p-1"
+            className="bg-green-300 dark:bg-gray-700 rounded-sm hover:cursor-pointer hover:bg-green-400 p-1"
           >
             <IoMdEye />
           </button>
