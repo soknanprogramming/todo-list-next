@@ -1,0 +1,12 @@
+version: "3.8"
+
+services:
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile.prod
+    ports:
+      - 3000:3000
+    environment:
+      - DATABASE_URL=value
+      - BETTER_AUTH_SECRET: 82452fc72d67d1af9cb02044ce97e20e15387d75d985ca8d506071e6966bb6c4

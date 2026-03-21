@@ -48,6 +48,6 @@ export async function updateProject(
   });
     return { success: true, message: "Project updated" };
   } catch (e) {
-    return { success: false, message: `Something went wrong: ${e}` };F
+    return { success: false, message: `Something went wrong: ${e}` };
   }
 }
