@@ -27,7 +27,7 @@ export default function ThemeToggle() {
           onClick={() => setTheme("light")}
           className={`flex items-center hover:cursor-pointer px-3 py-1 rounded ${
             theme === "light"
-              ? "bg-yellow-500 text-white"
+              ? "bg-yellow-700 text-white"
               : "bg-gray-200 dark:bg-gray-800"
           }`}
         >
@@ -38,7 +38,7 @@ export default function ThemeToggle() {
           onClick={() => setTheme("dark")}
           className={`flex items-center hover:cursor-pointer px-3 py-1 rounded ${
             theme === "dark"
-              ? "bg-yellow-500 text-white"
+              ? "bg-yellow-700 text-white"
               : "bg-gray-200 dark:bg-gray-800"
           }`}
         >
@@ -49,7 +49,7 @@ export default function ThemeToggle() {
           onClick={() => setTheme("system")}
           className={`px-3 flex items-center hover:cursor-pointer py-1 rounded ${
             theme === "system"
-              ? "bg-yellow-500 text-white"
+              ? "bg-yellow-700 text-white"
               : "bg-gray-200 dark:bg-gray-800"
           }`}
         >

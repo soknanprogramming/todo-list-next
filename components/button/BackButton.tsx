@@ -6,12 +6,14 @@ interface Props {
   className?: string;
   children: React.ReactNode;
   url?: string;
+  onClick?: () => void;
 }
 
 export default function BackButton({
   className = "",
   children,
   url = "",
+  onClick = () => {},
 }: Props) {
   const router = useRouter();
 
@@ -22,7 +24,10 @@ export default function BackButton({
           {children}
         </button>
       ) : (
-        <button className={className} onClick={() => router.push(url)}>
+        <button className={className} onClick={() => {
+          onClick();
+          router.push(url);
+        }}>
           {children}
         </button>
       )}
